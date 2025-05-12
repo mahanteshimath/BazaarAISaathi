@@ -39,40 +39,36 @@ Finance_with_Perplexity = st.Page(
     icon=":material/money_off:",
 )
 
-# Fundamental_Analysis = st.Page(
-#     "pages/Fundamental_Analysis.py",
-#     title="Fundamental Analysis",
-#     icon=":material/finance:",
-# )
-# Technical_Analysis = st.Page(
-#     "pages/Technical_Analysis.py",
-#     title="Technical Analysis",
-#     icon=":material/finance:",
-# )
+Fundamental_Analysis = st.Page(
+    "pages/Fundamental_Analysis.py",
+    title="Fundamental Analysis",
+    icon=":material/finance:",
+)
+Technical_Analysis = st.Page(
+    "pages/Technical_Analysis.py",
+    title="Technical Analysis",
+    icon=":material/finance:",
+)
 
-# Tip_Tester = st.Page(
-#     "pages/Tip_Tester.py",
-#     title="Tip Tester",
-#     icon=":material/lightbulb:",
-# )
+Tip_Tester = st.Page(
+    "pages/Tip_Tester.py",
+    title="Tip Tester",
+    icon=":material/lightbulb:",
+)
 
-# Portfolio_Analysis = st.Page(
-#     "pages/Portfolio_Analysis.py",
-#     title="Portfolio Analysis",
-#     icon=":material/analytics:",
-# )
-# Portfolio_Optimization = st.Page(
-#     "pages/Portfolio_Optimization.py",
-#     title="Portfolio Optimization",
-#     icon=":material/analytics:",
-# )
+Portfolio_Analysis = st.Page(
+    "pages/Portfolio_Analysis.py",
+    title="Portfolio Analysis and Optimization",
+    icon=":material/analytics:",
+)
+
 
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "Indian Stock market": [Indicators,Finance_with_Perplexity],
-        # "Stock Analysis": [Fundamental_Analysis,Technical_Analysis,Tip_Tester],
-        #  "Portfolio": [Portfolio_Analysis,Portfolio_Optimization],
+        "Stock Analysis": [Fundamental_Analysis,Technical_Analysis,Tip_Tester],
+        "Portfolio": [Portfolio_Analysis],
 
     }
 )
