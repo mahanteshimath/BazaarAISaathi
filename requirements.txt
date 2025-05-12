@@ -10,4 +10,3 @@ requests-cache
 typing-extensions
 yfinance
 requests
-pyplot
