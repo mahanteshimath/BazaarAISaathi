@@ -72,7 +72,7 @@ pg = st.navigation(
         "Info": [Hypothesis_page,Architecture_page],
         "Indian Stock market": [Indicators,Finance_with_Perplexity],
         # "Stock Analysis": [Fundamental_Analysis,Technical_Analysis,Tip_Tester],
-        # "Portfolio": [Portfolio_Analysis,Portfolio_Optimization],
+        #  "Portfolio": [Portfolio_Analysis,Portfolio_Optimization],
 
     }
 )

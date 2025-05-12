@@ -38,36 +38,37 @@ with col1:
 with col2:
     st.title("Hypothesis", anchor=False)
     st.write(
-        '''Giving more focus on infra development lead to overall country development in all angles best examples are Dubai and Singapore. We can learn from proven strategies and implementing them with productively will help to India to become developed country.
-   Leveraging AI-driven analytics for urban infrastructure such as predictive maintenance, public transport optimization, energy forecasting, smart waste management, disaster resilience, and affordable housing can greatly enhance sustainability and quality of life in Indian megacities.'''
+        """
+        This section explores various hypotheses related to the Indian stock market, stock analysis, and portfolio management. 
+        The goal is to provide insights and validate assumptions using data-driven approaches.
+        """
     )
-    st.write("\n")
+    st.subheader("Indian Stock Market")
     st.write(
-        '''Finally my point is sometimes building one bridge helped villages to improve economically i.e people can transport goods or youth can go for jobs or higher education.'''
+        """
+        - Analyze market indicators to understand trends and patterns.
+        - Explore the impact of macroeconomic factors on stock performance.
+        """
+    )
+    st.subheader("Stock Analysis")
+    st.write(
+        """
+        - Perform fundamental and technical analysis to identify potential investment opportunities.
+        - Test the effectiveness of stock tips and strategies.
+        """
+    )
+    st.subheader("Portfolio")
+    st.write(
+        """
+        - Optimize portfolio allocation to maximize returns and minimize risks.
+        - Analyze portfolio performance over time.
+        """
     )
 st.markdown("""---------------------------------""")
 st.write("\n")
 
 st.write("\n")
-st.title("Girish Bharadwaj: Bridge Man of India")
 
-
-article_content = """
-### Girish Bharadwaj: How a Hole in a Boat Led to the Emergence of Bridge Man of India
-*(Excerpt from The New Indian Express)*
-
-Girish Bharadwaj, known as the "Bridge Man of India," has transformed rural connectivity in India by building over 130 bridges across various states, including Karnataka, Kerala, Telangana, and Odisha. His journey began in 1989 when residents of Aramburu village, tired of relying on a boat that frequently broke down, approached him to construct a footbridge. Despite being a mechanical engineer with no prior experience in bridge construction, Bharadwaj was inspired by the villagers' determination and decided to help.
-
-He designed a low-cost hanging bridge with assistance from engineering friends and local villagers, completing the project for under ₹2 lakh. This initial success led to government collaboration, expanding his efforts to connect isolated communities. Bharadwaj's bridges are notable for their cost-effectiveness and durability, often surpassing their intended lifespan of 10-20 years.
-
-His innovative approach draws inspiration from famous suspension bridges like San Francisco's Golden Gate Bridge while adapting designs to local needs. He has received recognition for his contributions, including the Padma Shri award in 2017. Now, his son continues his legacy as demand shifts towards larger structures due to increased vehicle use. Bharadwaj’s work not only improved infrastructure but also empowered rural communities by connecting them to broader opportunities.
-
-...
-
-For more details, please refer to the [full article on The New Indian Express](https://www.newindianexpress.com/good-news/2020/Nov/15/girish-bharadwajhow-a-hole-in-a-boat-led-to-the-emergence-of-bridge-man-of-india-2223737.html).
-"""
-
-st.markdown(article_content)
 
 st.markdown(
     '''
@@ -101,4 +102,4 @@ text-align: center;
 <p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
 </div>
 """
-st.markdown(footer,unsafe_allow_html=True)  
+st.markdown(footer,unsafe_allow_html=True)
