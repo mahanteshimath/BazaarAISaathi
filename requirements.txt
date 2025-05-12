@@ -1,0 +1,12 @@
+streamlit
+requests
+pandas
+python-dotenv
+plotly
+langchain
+langchain-community
+langchain-core
+requests-cache
+typing-extensions
+yfinance
+requests
