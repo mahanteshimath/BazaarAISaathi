@@ -1,0 +1,18 @@
+# Ignore secrets.toml
+secrets.toml
+
+# Python specific
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment files
+.env
+*.env
+
+# Streamlit specific
+.streamlit/
+
+# OS generated files
+.DS_Store
+Thumbs.db

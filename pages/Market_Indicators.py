@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import json
+from utils.get_market_insights import get_market_insights, get_top_gainers_and_losers
 
 st.title("Today's Market Indicators")
 st.write(
@@ -10,67 +11,19 @@ st.write(
     """
 )
 
-def get_market_insights():
-    api_endpoint = "https://api.perplexity.ai/chat/completions"
-    
-    payload = {
-        "model": "sonar",
-        "messages": [
-            {
-                "role": "system",
-                "content": "Be precise and concise. Focus on key market indicators and their current values."
-            },
-            {
-                "role": "user",
-                "content": "List all Indicators which will help to understand today's Indian Market and also provide the latest news related to these indicators."
-            }
-        ]
-    }
-    
-    try:
-        api_key = st.secrets["PERPLEXITY_API_KEY"]
-        headers = {
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
-        }
-        response = requests.post(api_endpoint, json=payload, headers=headers, timeout=30)
-        result = response.json()
-        
-        if 'choices' in result and len(result['choices']) > 0:
-            message = result['choices'][0]['message']
-            content = message.get('content', '')
-            citations = []
-            
-            # Find citations from the result
-            if isinstance(result, dict):
-                citations = result.get('citations', [])
-                if not citations and 'choices' in result:
-                    for choice in result['choices']:
-                        if isinstance(choice, dict) and 'message' in choice:
-                            citations.extend(choice['message'].get('citations', []))
-            
-            return {
-                "content": content,
-                "citations": citations
-            }
-        return result
-    except requests.RequestException as e:
-        return {"error": f"API request failed: {str(e)}"}
-    except json.JSONDecodeError as e:
-        return {"error": f"Failed to parse response: {str(e)}"}
-    except KeyError as e:
-        return {"error": f"Missing key in secrets: {str(e)}"}
+def fetch_market_insights():
+    api_key = st.secrets["PERPLEXITY_API_KEY"]
+    return get_market_insights(api_key)
 
 if st.button("Get Latest Market Insights"):
     with st.spinner("Fetching market insights..."):
-        insights = get_market_insights()
-        
+        insights = fetch_market_insights()
+
         if "error" in insights:
             st.error(f"Error fetching insights: {insights['error']}")
         elif "content" in insights:
-            st.subheader("Market Analysis")
             st.write(insights["content"])
-            
+
             if insights["citations"]:
                 st.subheader("Sources")
                 for i, citation in enumerate(insights["citations"]):
@@ -84,15 +37,32 @@ if st.button("Get Latest Market Insights"):
         else:
             st.json(insights)
 
-st.write("-----")
-st.subheader("Top 5 Gainers and Losers")
-st.write(
-    """
-    Here are the top 5 gainers and losers in today's market:
-    """
-)
+        def fetch_top_gainers_and_losers():
+            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            return get_top_gainers_and_losers(api_key)
 
+        st.write("-----")
+        st.subheader("Top 5 Gainers and Losers")
 
+        # Fetch and display top gainers and losers
+        gainers_and_losers = fetch_top_gainers_and_losers()
+        if "error" in gainers_and_losers:
+            st.error(f"Error fetching data: {gainers_and_losers['error']}")
+        elif "content" in gainers_and_losers:
+            st.write(gainers_and_losers["content"])
+
+            if insights["citations"]:
+                st.subheader("Sources")
+                for i, citation in enumerate(insights["citations"]):
+                    if isinstance(citation, dict):
+                        title = citation.get('title', 'Source')
+                        url = citation.get('url', '#')
+                    else:
+                        title = 'Source'
+                        url = citation if isinstance(citation, str) else '#'
+                    st.markdown(f"{i+1}. [{title}]({url})")
+        else:
+            st.json(insights)
 
 st.markdown(
     '''
