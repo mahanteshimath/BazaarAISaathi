@@ -28,7 +28,7 @@ def add_custom_css():
         """, unsafe_allow_html=True)
 
 add_custom_css()
-st.markdown('<div class="flashing-title">❄️INDIAN-INFRA-AI-INSIGHTS❄️</div>', unsafe_allow_html=True)
+st.markdown('<div class="flashing-title">❄️BAAZAR-AI-SAATHI❄️</div>', unsafe_allow_html=True)
 
 
 col1, col2 = st.columns(2, gap="small")
