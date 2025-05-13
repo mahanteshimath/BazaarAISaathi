@@ -8,7 +8,7 @@ st.write(
     The topics are categorized into different sections for better understanding and usability.
     """
 )
-st.wrtite("-----")
+st.write("-----")
 
 
 
