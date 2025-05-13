@@ -22,7 +22,7 @@ def fetch_nse():
 # ---------------------- Step 2: Fetch BSE Companies ---------------------- #
 @st.cache_data
 def fetch_bse():
-    url = "https://www.bseindia.com/corporates/List_Scrips.aspx"
+    url = "https://www.bsesme.com/corpoaratefilings/ScripsList.aspx"
     headers = {'User-Agent': 'Mozilla/5.0'}
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
