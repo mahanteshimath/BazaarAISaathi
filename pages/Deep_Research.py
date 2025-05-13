@@ -9,10 +9,23 @@ st.write(
     """
 )
 st.write("-----")
+st.title("1.Market Analysis for a Specific Industry")
 
 
+st.write("-----")
+st.title("2. Competitor Benchmarking")
+
+st.write("-----")
+st.title("3. Investment Opportunity Evaluation")
+
+st.write("-----")
+st.title("4. Technology Trends Report")
 
 
+st.write("-----")
+st.title("5. Marketing Strategy Development")
+
+st.write("-----")
 st.markdown(
     '''
     <style>
