@@ -39,17 +39,16 @@ Finance_with_Perplexity = st.Page(
     icon=":material/money_off:",
 )
 
-Fundamental_Analysis = st.Page(
-    "pages/Fundamental_Analysis.py",
-    title="Fundamental Analysis",
+Techno_Fund_Analysis = st.Page(
+    "pages/Techno_Fund_Analysis.py",
+    title="Techno-Fund Analysis",
     icon=":material/finance:",
 )
-Technical_Analysis = st.Page(
-    "pages/Technical_Analysis.py",
-    title="Technical Analysis",
-    icon=":material/finance:",
+Deep_Research = st.Page(
+    "pages/Deep_Research.py",
+    title="Deep Research",
+    icon=":material/research:",
 )
-
 Tip_Tester = st.Page(
     "pages/Tip_Tester.py",
     title="Tip Tester",
@@ -67,7 +66,7 @@ pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "Indian Stock market": [Indicators,Finance_with_Perplexity],
-        "Stock Analysis": [Fundamental_Analysis,Technical_Analysis,Tip_Tester],
+        "Stock Analysis": [Techno_Fund_Analysis,Deep_Research,Tip_Tester],
         "Portfolio": [Portfolio_Analysis],
 
     }

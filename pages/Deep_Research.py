@@ -1,7 +1,13 @@
 import streamlit as st
 
 
-st.title("Technical Analysis")
+st.title("Deep Researches on Indian Stocks, Sectors and different perspectives")
+st.write(
+    """
+    This page provides a comprehensive overview of various research topics related to the Indian stock market. 
+    The topics are categorized into different sections for better understanding and usability.
+    """
+)
 
 st.markdown(
     '''
