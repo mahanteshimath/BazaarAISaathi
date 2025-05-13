@@ -8,8 +8,8 @@ st.logo(
 )
 
 st.set_page_config(
-  page_title="BAZAARAISAATHI",
-  page_icon="🇮🇳",
+  page_title="BAZAAR-AI-SAATHI",
+  page_icon=":bar_chart:",
   layout="wide",
   initial_sidebar_state="expanded",
 ) 
