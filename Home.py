@@ -27,6 +27,12 @@ Architecture_page = st.Page(
     icon=":material/home:",
 )
 # --- Projects ---
+Stocks_list = st.Page(
+    "pages/Stocks_List.py",
+    title="All listed Stocks",
+    icon=":material/list:",
+)
+
 Indicators = st.Page(
     "pages/Market_Indicators.py",
     title="Market Indicators",
@@ -66,7 +72,7 @@ Portfolio_Analysis = st.Page(
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "Indian Stock market": [Indicators,Finance_with_Perplexity],
+        "Indian Stock market": [Stocks_list,Indicators,Finance_with_Perplexity],
         "Stock Analysis": [Techno_Fund_Analysis,Deep_Research,Tip_Tester],
         "Portfolio": [Portfolio_Analysis],
 
