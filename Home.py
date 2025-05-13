@@ -44,10 +44,11 @@ Techno_Fund_Analysis = st.Page(
     title="Techno-Fund Analysis",
     icon=":material/finance:",
 )
+
 Deep_Research = st.Page(
     "pages/Deep_Research.py",
     title="Deep Research",
-    icon=":material/research:",
+    icon=":material/brain:",
 )
 Tip_Tester = st.Page(
     "pages/Tip_Tester.py",
