@@ -41,7 +41,7 @@ try:
             input_variables=["Listed_Name"],
             template=(
                 "Act as an investor with 50 years of experience. Provide a comprehensive analysis of the given {Listed_Name}. This should include a thorough evaluation of the company financial health, its competitive position in the industry, and any macroeconomic factors that could impact its performance. The analysis should also include an assessment of the stock's valuation, taking into account its projected earnings growth and other key financial metrics. Based on your analysis, provide a recommendation on whether to buy, hold, or sell the stock. Your analysis should be backed with supporting data and reasoning."
-                "📰 For {Listed_Name}, analyze recent news articles, social media posts, and expert commentary. "
+                "Also For {Listed_Name}, analyze recent news articles, social media posts, and expert commentary. "
                 "Summarize the prevailing sentiment, highlight any key events, and note emerging trends that may impact the stock."
             )
         ),
