@@ -21,7 +21,27 @@ st.markdown(
 )
 
 st.header("Upload or Paste Your Portfolio")
+st.expander("Instructions", expanded=True, key="portfolio_instructions")
+st.write(
+    """
+    1. You can either paste your portfolio data in the text area below or upload a CSV/Excel file.
+    2. The portfolio data should be in a tabular format with the following columns:
+        - INSTRUMENT
+        - QTY.
+        - AVG. COST
+        - LTP
+        - INVESTED
+        - CUR. VAL
+        - P&L
+    3. Click on 'Run Portfolio Analysis' to get stock-wise recommendations.
 
+    INSTRUMENT	QTY.	AVG. COST	LTP	INVESTED	CUR. VAL	P&L
+    ASIANPAINT	15	2586.67	2353.15	38800	35297.25	-3502.75
+    BAJAJFINSV	900	617.25	2033.7	555521.9	1830330	1274808.1
+    BAJAJHFL	428	70	123.9	29960	53029.2	23069.2
+
+    """
+)
 portfolio_text = st.text_area("Paste your portfolio data (CSV or tabular format)", height=120, placeholder="INSTRUMENT\tQTY.\tAVG. COST\tLTP\tINVESTED\tCUR. VAL\tP&L\nASIANPAINT\t15\t2586.67\t2353.15\t38800\t35297.25\t-3502.75\n...")
 uploaded_file = st.file_uploader("Or upload your portfolio file (CSV or Excel)", type=["csv", "xls", "xlsx"])
 
