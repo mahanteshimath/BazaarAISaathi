@@ -83,7 +83,7 @@ try:
             template=(
                 "⚠️ Evaluate the following trading strategy:\n{strategy}\n"
                 "Identify potential risks such as market volatility, liquidity issues, or unexpected market events. "
-                "Summarize your risk assessment in 4 concise bullet points, and state in the final bullet point whether the strategy meets an acceptable risk tolerance."
+                "Summarize your risk assessment in 4 concise bullet points, and state in the final bullet point whether the strategy meets an acceptable risk tolerance.  At the end of analysis recommend with BUY at PRICE , SELL At Pirce or HOLD. "
             )
         ),
         output_key="risk_assessment"
