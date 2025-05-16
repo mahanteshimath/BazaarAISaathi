@@ -21,7 +21,7 @@ st.markdown(
 )
 
 st.header("Upload or Paste Your Portfolio")
-st.expander("Instructions", expanded=True))
+st.expander("Instructions", expanded=True)
 st.write(
     """
     1. You can either paste your portfolio data in the text area below or upload a CSV/Excel file.
