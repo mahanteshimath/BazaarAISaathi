@@ -68,13 +68,18 @@ Portfolio_Analysis = st.Page(
     icon=":material/analytics:",
 )
 
+Financial_Independence = st.Page(
+    "pages/Financial_Independence.py",
+    title="Financial Independence",
+    icon=":material/money_off:",
+)
 
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "Indian Stock market": [Stocks_list,Indicators,Finance_with_Perplexity],
         "Stock Analysis": [Techno_Fund_Analysis,Deep_Research,Tip_Tester],
-        "Portfolio": [Portfolio_Analysis],
+        "Portfolio": [Portfolio_Analysis,Financial_Independence],
 
     }
 )
