@@ -12,7 +12,7 @@ def generate_fire_plan(salary, years, essentials, non_essentials, savings_pct, i
     payload = {
         "model": "sonar-reasoning-pro",
         "messages": [
-            {"role": "system", "content": "You are a financial planning 50% expert, Helping use client to achive FIRE amount with detailed plan."},
+            {"role": "system", "content": "You are a 30+ years financial planning expert, Helping use client to achive FIRE amount with detailed plan."},
             {"role": "user", "content": prompt}
         ]
     }
