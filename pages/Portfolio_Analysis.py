@@ -48,7 +48,9 @@ if portfolio_df is not None:
             results = analyze_portfolio(portfolio_df, api_key)
             st.subheader("Stock-wise Recommendations")
             for res in results:
-                st.markdown(f"**{res['stock']}**: {res['analysis']}")
+                st.markdown(f"### {res['stock']}: Analysis of {res['stock']} Stock")
+                st.write(res['analysis'])
+                st.markdown("---")
 
 footer="""<style>
 
