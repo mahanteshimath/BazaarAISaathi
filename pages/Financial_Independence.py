@@ -1,37 +1,39 @@
 import streamlit as st
-from utils.deep_research import perform_market_analysis
+from utils.fire_planner import generate_fire_plan
 
 st.title("Financial Independence")
 
 st.header("FIRE (Financial Independence, Retire Early) Planner")
 
-st.markdown("""
-Enter your scenario or question below. For example:
-- "Create a detailed plan for achieving financial independence within a 10-year timeframe on a salary of 50,000 rupees per month. The plan should include specific savings goals, investment strategies, and potential side income sources. Provide a clear breakdown of monthly expenses, recommended savings percentage, and types of investments to consider, such as stocks, mutual funds, or real estate. Additionally, outline any skills that could be developed to increase earning potential over this period."
-""")
+with st.form("fire_form"):
+    salary = st.number_input("Monthly Salary (in rupees)", min_value=1000, max_value=1000000, value=50000, step=1000)
+    years = st.number_input("Timeframe to achieve FIRE (years)", min_value=1, max_value=50, value=10)
+    essentials = st.number_input("Monthly Essentials (in rupees)", min_value=0, max_value=1000000, value=25000, step=500)
+    non_essentials = st.number_input("Monthly Non-Essentials (in rupees)", min_value=0, max_value=1000000, value=10000, step=500)
+    savings_pct = st.slider("Recommended Savings Percentage (%)", min_value=1, max_value=90, value=30)
+    investment_types = st.text_input("Types of Investments (e.g., stocks, mutual funds, real estate)", value="mutual funds, stocks, savings accounts")
+    side_income = st.text_input("Potential Side Income Sources (comma separated)", value="freelancing, tutoring, online business")
+    skills = st.text_input("Skills to Develop (comma separated)", value="coding, design, project management")
+    submitted = st.form_submit_button("Run FIRE Planner")
 
-fire_prompt = st.text_area("Ask your FIRE/financial independence question", key="fire_prompt", height=150, placeholder="Type your scenario or question here...")
-
-if st.button("Run FIRE Planner", key="run_fire_planner"):
-    if fire_prompt:
-        with st.spinner("Generating your FIRE plan..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
-            fire_result = perform_market_analysis(fire_prompt, api_key)
-
-            if isinstance(fire_result, dict) and "error" in fire_result:
-                st.error(f"Error: {fire_result['error']}")
-            elif isinstance(fire_result, dict):
-                st.subheader("FIRE Plan Result")
-                st.write(fire_result.get("content", "No content available"))
-                citations = fire_result.get("citations", [])
-                if citations:
-                    st.subheader("Citations")
-                    for i, citation in enumerate(citations):
-                        st.write(f"{i+1}. {citation}")
-            else:
-                st.warning("Unexpected response format.")
-    else:
-        st.warning("Please enter a scenario or question before running the planner.")
+if submitted:
+    with st.spinner("Generating your FIRE plan..."):
+        api_key = st.secrets["PERPLEXITY_API_KEY"]
+        fire_result = generate_fire_plan(
+            salary, years, essentials, non_essentials, savings_pct, investment_types, side_income, skills, api_key
+        )
+        if isinstance(fire_result, dict) and "error" in fire_result:
+            st.error(f"Error: {fire_result['error']}")
+        elif isinstance(fire_result, dict):
+            st.subheader("FIRE Plan Result")
+            st.write(fire_result.get("content", "No content available"))
+            citations = fire_result.get("citations", [])
+            if citations:
+                st.subheader("Citations")
+                for i, citation in enumerate(citations):
+                    st.write(f"{i+1}. {citation}")
+        else:
+            st.warning("Unexpected response format.")
 
 st.markdown(
     '''
