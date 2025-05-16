@@ -35,7 +35,7 @@ R1_exp.markdown(
         - P&L
     3. Click on 'Run Portfolio Analysis' to get stock-wise recommendations.
 
-    [Download Sample Portfolio CSV](./src/holdings.csv)
+    [Download Sample Portfolio CSV](https://drive.google.com/file/d/16mpP2pJzNfmMoMcmeHyB9b7tCvlbtM_H/view?usp=drive_link)
     """
 )
 portfolio_text = st.text_area("Paste your portfolio data (CSV or tabular format)", height=120, placeholder="INSTRUMENT\tQTY.\tAVG. COST\tLTP\tINVESTED\tCUR. VAL\tP&L\nASIANPAINT\t15\t2586.67\t2353.15\t38800\t35297.25\t-3502.75\n...")
