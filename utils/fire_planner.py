@@ -10,9 +10,9 @@ def generate_fire_plan(salary, years, essentials, non_essentials, savings_pct, i
     Create a detailed plan for achieving financial independence within a {years}-year timeframe on a salary of {salary} rupees per month.\n
     The plan should include:\n- Specific savings goals (Essentials: {essentials}, Non-essentials: {non_essentials}, Savings %: {savings_pct})\n- Investment strategies (Types: {investment_types})\n- Potential side income sources (e.g., {side_income})\n- A clear breakdown of monthly expenses\n- Recommended savings percentage\n- Types of investments to consider\n- Skills to develop to increase earning potential: {skills}\n\nConsider inflation and cost of living increases during the next {years} years.\nProvide a clear, actionable, step-by-step plan.\n"""
     payload = {
-        "model": "sonar",
+        "model": "sonar-reasoning-pro",
         "messages": [
-            {"role": "system", "content": "You are a financial planning expert."},
+            {"role": "system", "content": "You are a financial planning 50% expert, Helping use client to achive FIRE amount with detailed plan."},
             {"role": "user", "content": prompt}
         ]
     }
