@@ -8,7 +8,7 @@ st.title("Finance Document Summarizer")
 summarizer = FinanceDocumentSummarizer()
 
 # Input for public document links
-document_links = st.text_area("Enter public document links (separated by semicolons):")
+document_links = st.text_area("Enter public document links (separated by semicolons):", placeholder="https://www.bseindia.com/xml-data/corpfiling/AttachHis/03820485-8318-496e-845a-3c0f87ceceb0.pdf; extract info from this")
 
 # Use API key from secrets
 api_key = st.secrets["PERPLEXITY_API_KEY"]
