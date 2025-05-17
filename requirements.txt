@@ -18,3 +18,5 @@ beautifulsoup4
 lxml
 docling
 docling-parse
+pytesseract
+Pillow
