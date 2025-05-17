@@ -77,7 +77,7 @@ Financial_Independence = st.Page(
 Finance_doc_summarize = st.Page(
     "pages/Finance_doc_summarize.py",
     title="Finance Document Summarizer",
-    icon=":material/document-text:",
+    icon=":material/summarize:",
 )
 
 pg = st.navigation(
