@@ -3,18 +3,19 @@ import asyncio  # For running asynchronous code
 import os       # To access environment variables
 import requests  # For making API requests
 import json  # For handling JSON responses
+import streamlit as st
 
 # Retrieve configuration from environment variables or use defaults
-BASE_URL = os.getenv("EXAMPLE_BASE_URL") or "https://api.perplexity.ai"
-API_KEY = os.getenv("EXAMPLE_API_KEY") 
-MODEL_NAME = os.getenv("EXAMPLE_MODEL_NAME") or "sonar-pro"
+BASE_URL = os.getenv("EXAMPLE_BASE_URL", "https://api.perplexity.ai")
+API_KEY = st.secrets["PERPLEXITY_API_KEY"]
+
+MODEL_NAME = os.getenv("EXAMPLE_MODEL_NAME", "sonar-pro")
 
 # Validate that all required configuration variables are set
 if not BASE_URL or not API_KEY or not MODEL_NAME:
     raise ValueError(
         "Please set EXAMPLE_BASE_URL, EXAMPLE_API_KEY, EXAMPLE_MODEL_NAME via env var or code."
     )
-
 class FinanceDocumentSummarizer:
     """A class to summarize finance documents using the Perplexity API."""
 
