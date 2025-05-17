@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.tip_analysis import analyze_tip_or_advice
-import tempfile
+from PIL import Image
 import easyocr
 import numpy as np
 
@@ -22,11 +22,11 @@ extracted_text = None
 if uploaded_file:
     st.image(uploaded_file, caption="Uploaded Screenshot", use_container_width=True)
     try:
-        # Convert uploaded file to numpy array
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+        # Open the uploaded file using Pillow
+        image = Image.open(uploaded_file)
         reader = load_ocr_reader()
         # Extract text using EasyOCR
-        results = reader.readtext(file_bytes)
+        results = reader.readtext(np.array(image))
         extracted_text = ' '.join([text[1] for text in results])
         if extracted_text:
             st.subheader("Extracted Text from Image:")
