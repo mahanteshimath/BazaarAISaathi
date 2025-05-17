@@ -39,7 +39,6 @@ with col2:
     st.title("Hypothesis", anchor=False)
     st.write(
         """
-        This section explores various hypotheses related to the Indian stock market, stock analysis, and portfolio management. 
         The goal is to help retail investors safeguard their hard-earned money by leveraging advanced AI-driven insights, 
         data-driven strategies, and comprehensive financial tools.
         """
