@@ -34,20 +34,19 @@ if submitted:
         elif isinstance(fire_result, dict):
             st.subheader("FIRE Plan Result")
             content = fire_result.get("content", "No content available")
-            # Split content into lines and render LaTeX where appropriate
+            # Improved formatting: only render as LaTeX if line looks like a formula
             for line in content.splitlines():
                 line = line.strip()
                 if not line:
+                    st.markdown("")  # preserve paragraph breaks
                     continue
-                # Detect LaTeX block expressions
-                if line.startswith("$$") and line.endswith("$$"):
-                    st.latex(line[2:-2])
-                elif line.startswith("$") and line.endswith("$"):
-                    st.latex(line[1:-1])
-                elif line.startswith("\\[") and line.endswith("\\]"):
-                    st.latex(line[2:-2])
-                elif line.startswith("\\(") and line.endswith("\\)"):
-                    st.latex(line[2:-2])
+                if (
+                    (line.startswith("$$") and line.endswith("$$")) or
+                    (line.startswith("$") and line.endswith("$")) or
+                    (line.startswith("\\[") and line.endswith("\\]")) or
+                    (line.startswith("\\(") and line.endswith("\\)"))
+                ):
+                    st.latex(line.strip("$").strip("\\[").strip("\\]").strip("\\(").strip("\\)"))
                 else:
                     st.markdown(line)
             citations = fire_result.get("citations", [])
