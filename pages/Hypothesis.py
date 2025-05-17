@@ -40,7 +40,8 @@ with col2:
     st.write(
         """
         This section explores various hypotheses related to the Indian stock market, stock analysis, and portfolio management. 
-        The goal is to provide insights and validate assumptions using data-driven approaches.
+        The goal is to help retail investors safeguard their hard-earned money by leveraging advanced AI-driven insights, 
+        data-driven strategies, and comprehensive financial tools.
         """
     )
     st.subheader("Indian Stock Market")
@@ -48,20 +49,23 @@ with col2:
         """
         - Analyze market indicators to understand trends and patterns.
         - Explore the impact of macroeconomic factors on stock performance.
+        - Provide actionable insights to minimize risks and maximize returns.
         """
     )
     st.subheader("Stock Analysis")
     st.write(
         """
         - Perform fundamental and technical analysis to identify potential investment opportunities.
-        - Test the effectiveness of stock tips and strategies.
+        - Test the effectiveness of stock tips and strategies to avoid speculative losses.
+        - Deliver AI-powered recommendations for informed decision-making.
         """
     )
     st.subheader("Portfolio")
     st.write(
         """
         - Optimize portfolio allocation to maximize returns and minimize risks.
-        - Analyze portfolio performance over time.
+        - Analyze portfolio performance over time to ensure alignment with financial goals.
+        - Provide stock-wise recommendations to improve portfolio health.
         """
     )
 st.markdown("""---------------------------------""")
