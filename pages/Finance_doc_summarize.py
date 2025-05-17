@@ -29,6 +29,7 @@ if uploaded_files:
 
                 summary = summarizer.summarize_pdf("temp.pdf")
                 st.write("PDF summarization completed.")
+                st.json(summary)  # Display the summary
 
             elif file_type in ["image/png", "image/jpeg", "image/jpg"]:
                 # Handle image files
@@ -37,12 +38,14 @@ if uploaded_files:
 
                 summary = summarizer.summarize_image("temp_image")
                 st.write("Image summarization completed.")
+                st.json(summary)  # Display the summary
 
             elif file_type == "text/plain":
                 # Handle text files
                 text_content = uploaded_file.read().decode("utf-8")
                 summary = summarizer.summarize_text(text_content)
                 st.write("Text summarization completed.")
+                st.json(summary)  # Display the summary
 
             else:
                 st.warning(f"Unsupported file type: {file_type}")
