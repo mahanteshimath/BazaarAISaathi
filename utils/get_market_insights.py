@@ -68,7 +68,9 @@ def get_top_gainers_and_losers(api_key):
             }
         ],
         "web_search_options": {
-      "user_location": {"country": "IN"}
+            "search_context_size": "high",
+            "user_location": {"country": "IN"}
+        }
     }
     }
 
