@@ -19,7 +19,7 @@ uploaded_file = st.file_uploader("Upload a screenshot of your investment advice 
 
 extracted_text = None
 if uploaded_file:
-    st.image(uploaded_file, caption="Uploaded Screenshot", use_column_width=True)
+    st.image(uploaded_file, caption="Uploaded Screenshot", use_container_width=True)
     if ocr_image is not None:
         # Read image bytes and run OCR
         image_bytes = uploaded_file.read()
