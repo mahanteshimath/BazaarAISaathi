@@ -1,6 +1,12 @@
 import streamlit as st
 from utils.tip_analysis import analyze_tip_or_advice
 
+# Add docling import
+try:
+    from docling.ocr import ocr_image
+except ImportError:
+    ocr_image = None
+
 st.title("Tip or Investment Advice Tester")
 st.write("This app allows you to test the performance of your investment advice or tip. You can input the details of your investment, including the amount, duration, and expected return. The app will then calculate the potential profit or loss based on your inputs.")
 
@@ -10,8 +16,25 @@ tip_text = st.text_area("Enter your investment advice or tip", placeholder="Type
 # Add file uploader for screenshot of advice
 uploaded_file = st.file_uploader("Upload a screenshot of your investment advice (optional)", type=["png", "jpg", "jpeg"])
 
+extracted_text = None
 if uploaded_file:
     st.image(uploaded_file, caption="Uploaded Screenshot", use_column_width=True)
+    if ocr_image is not None:
+        # Read image bytes and run OCR
+        image_bytes = uploaded_file.read()
+        try:
+            extracted_text = ocr_image(image_bytes)
+        except Exception as e:
+            extracted_text = None
+            st.warning(f"Could not extract text from image: {e}")
+        if extracted_text:
+            st.subheader("Extracted Text from Image:")
+            st.write(extracted_text)
+            # Optionally, allow user to use extracted text as tip_text
+            if st.checkbox("Use extracted text as tip/advice", value=True):
+                tip_text = extracted_text
+    else:
+        st.warning("docling package is not installed. Please install it to enable OCR functionality.")
 
 if tip_text or uploaded_file:
     st.success("Your investment advice or tip has been submitted successfully!")
