@@ -72,7 +72,7 @@ def ask_finance_question(question, api_key):
             content = message.get('content', '')
             citations = message.get('citations', [])
             if citations:
-                content += "\n\nSources:\n" + "\n".join([f"- {cite}" for cite in citations])
+                content += "\n\nSources:\n" + "\n".join([f"- [{cite['title']}]({cite['url']})" for cite in citations])
             return content
         return result
     except requests.RequestException as e:
