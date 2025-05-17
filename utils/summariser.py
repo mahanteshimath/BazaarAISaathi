@@ -60,11 +60,11 @@ class FinanceDocumentSummarizer:
         """
         return {"text": text_content}
 
-    def summarize_with_api(self, text_content, api_key):
-        """Summarize the given text content using an external API.
+    def summarize_with_api(self, document_link, api_key):
+        """Summarize the given document link using an external API.
 
         Args:
-            text_content (str): The text content to summarize.
+            document_link (str): The public link to the document to summarize.
             api_key (str): The API key for authentication.
 
         Returns:
@@ -73,15 +73,15 @@ class FinanceDocumentSummarizer:
         api_endpoint = "https://api.perplexity.ai/chat/completions"
 
         payload = {
-            "model": "sonar",
+            "model": "sonar-reasoning-pro",
             "messages": [
                 {
                     "role": "system",
-                    "content": "Summarize the provided text content."
+                    "content": "Summarize the content of the document available at the provided link."
                 },
                 {
                     "role": "user",
-                    "content": text_content
+                    "content": document_link
                 }
             ],
             "web_search_options": {
