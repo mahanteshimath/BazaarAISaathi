@@ -17,7 +17,7 @@ try:
 
     # -------------------- Initialization --------------------
     # API key and model initialization
-    llm = ChatPerplexity(model="sonar-deep-research", 
+    llm = ChatPerplexity(model="sonar-reasoning-pro", 
                         #  temperature=0.5, 
                          pplx_api_key=st.secrets["PERPLEXITY_API_KEY"])
 
