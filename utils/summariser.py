@@ -73,7 +73,7 @@ class FinanceDocumentSummarizer:
         api_endpoint = "https://api.perplexity.ai/chat/completions"
 
         payload = {
-            "model": "r1-1776",
+            "model": "sonar-reasoning-pro",
             "messages": [
                 {
                     "role": "system",
