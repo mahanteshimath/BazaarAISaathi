@@ -74,18 +74,18 @@ Financial_Independence = st.Page(
     icon=":material/money_off:",
 )
 
-Finance_doc_summarize = st.Page(
-    "pages/Finance_doc_summarize.py",
-    title="Finance Document Summarizer",
-    icon=":material/summarize:",
-)
+# Finance_doc_summarize = st.Page(
+#     "pages/Finance_doc_summarize.py",
+#     title="Finance Document Summarizer",
+#     icon=":material/summarize:",
+# )
 
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "Indian Stock market": [Stocks_list,Indicators,Finance_with_Perplexity],
         "Stock Analysis": [Techno_Fund_Analysis,Deep_Research,Tip_Tester],
-        "Portfolio": [Portfolio_Analysis,Financial_Independence,Finance_doc_summarize],
+        "Portfolio": [Portfolio_Analysis,Financial_Independence],
 
     }
 )
