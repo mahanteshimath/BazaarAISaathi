@@ -20,7 +20,10 @@ def analyze_portfolio(df, api_key):
             "messages": [
                 {"role": "system", "content": "You are a stock market analysis expert."},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+        "web_search_options": {
+            "user_location": {"country": "IN"}
+        }
         }
         try:
             headers = {

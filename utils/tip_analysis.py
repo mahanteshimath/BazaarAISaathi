@@ -25,7 +25,10 @@ def analyze_tip_or_advice(tip_text, api_key):
                 "role": "user",
                 "content": tip_text
             }
-        ]
+        ],
+        "web_search_options": {
+      "user_location": {"country": "IN"}
+    }
     }
 
     try:

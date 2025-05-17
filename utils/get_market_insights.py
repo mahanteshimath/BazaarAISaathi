@@ -15,7 +15,10 @@ def get_market_insights(api_key):
                 "role": "user",
                 "content": "List all Indicators which will help to understand today's Indian Market and also provide the latest news related to these indicators."
             }
-        ]
+        ],
+        "web_search_options": {
+      "user_location": {"country": "IN"}
+    }
     }
 
     try:
@@ -63,7 +66,10 @@ def get_top_gainers_and_losers(api_key):
                 "role": "user",
                 "content": "List the top 5 gainers and losers in today's Indian stock market along with their percentage changes."
             }
-        ]
+        ],
+        "web_search_options": {
+      "user_location": {"country": "IN"}
+    }
     }
 
     try:

@@ -15,7 +15,10 @@ def perform_market_analysis(prompt, api_key):
                 "role": "user",
                 "content": prompt
             }
-        ]
+        ],
+        "web_search_options": {
+      "user_location": {"country": "IN"}
+    }
     }
 
     try:

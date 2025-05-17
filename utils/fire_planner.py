@@ -20,7 +20,10 @@ def generate_fire_plan(age, salary, years, essentials, non_essentials, savings_p
         "messages": [
             {"role": "system", "content": "You are a 30+ years financial planning expert, Helping use client to achive FIRE amount with detailed plan."},
             {"role": "user", "content": prompt}
-        ]
+        ],
+        "web_search_options": {
+      "user_location": {"country": "IN"}
+    }
     }
     try:
         headers = {
