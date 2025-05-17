@@ -16,3 +16,4 @@ requests
  ipykernel==6.29.5
 beautifulsoup4  
 lxml
+docling
