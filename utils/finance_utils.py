@@ -41,7 +41,7 @@ def ask_finance_question(question, api_key):
     api_endpoint = "https://api.perplexity.ai/chat/completions"
 
     payload = {
-        "model": "sonar",
+        "model": "sonar-pro",
         "messages": [
             {
                 "role": "system",
