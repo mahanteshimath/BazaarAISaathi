@@ -5,8 +5,12 @@ import tempfile
 # Add docling import
 try:
     from docling.ocr import ocr_image
+    from docling.document_converter import DocumentConverter, PdfFormatOption
+    from docling.datamodel.pipeline_options import PdfPipelineOptions
+    from docling.datamodel.base_models import InputFormat
 except ImportError:
     ocr_image = None
+    DocumentConverter = None
 
 st.title("Tip or Investment Advice Tester")
 st.write("This app allows you to test the performance of your investment advice or tip. You can input the details of your investment, including the amount, duration, and expected return. The app will then calculate the potential profit or loss based on your inputs.")
@@ -16,6 +20,31 @@ tip_text = st.text_area("Enter your investment advice or tip", placeholder="Type
 
 # Add file uploader for screenshot of advice
 uploaded_file = st.file_uploader("Upload a screenshot of your investment advice (optional)", type=["png", "jpg", "jpeg"])
+
+# Add input for PDF URL
+pdf_url = st.text_input("Or enter a PDF URL to extract advice (optional)", placeholder="https://...")
+
+pdf_extracted_text = None
+if pdf_url and DocumentConverter is not None:
+    try:
+        pipeline_options = PdfPipelineOptions()
+        pipeline_options.do_code_enrichment = True
+        converter = DocumentConverter(format_options={
+            InputFormat.PDF: PdfFormatOption(pipeline_options=pipeline_options)
+        })
+        with st.spinner("Extracting text from PDF..."):
+            result = converter.convert(pdf_url)
+            doc = result.document
+            pdf_extracted_text = doc.text if hasattr(doc, "text") else str(doc)
+        if pdf_extracted_text:
+            st.subheader("Extracted Text from PDF:")
+            st.write(pdf_extracted_text)
+            if st.checkbox("Use extracted PDF text as tip/advice", key="pdf", value=True):
+                tip_text = pdf_extracted_text
+    except Exception as e:
+        st.warning(f"Could not extract text from PDF: {e}")
+elif pdf_url and DocumentConverter is None:
+    st.warning("docling package is not installed. Please install it to enable PDF extraction functionality.")
 
 extracted_text = None
 if uploaded_file:
