@@ -5,9 +5,13 @@ from PIL import Image
 import pytesseract
 import os
 import io
+from utils.summariser import FinanceDocumentSummarizer
 
 # Title of the app
 st.title("Finance Document Summarizer")
+
+# Initialize the summarizer
+summarizer = FinanceDocumentSummarizer()
 
 # Upload multiple files
 uploaded_files = st.file_uploader("Upload files (PDF, PPT, Images, Text)", type=["pdf", "png", "jpg", "jpeg", "txt"], accept_multiple_files=True)
@@ -22,42 +26,22 @@ if uploaded_files:
             with open("temp.pdf", "wb") as f:
                 f.write(uploaded_file.getbuffer())
 
-            parser = DoclingPdfParser()
-            pdf_doc: PdfDocument = parser.load(path_or_stream="temp.pdf")
-
-            st.write("Parsing PDF...")
-
-            for page_no, pred_page in pdf_doc.iterate_pages():
-                st.subheader(f"Page {page_no}")
-
-                # Display extracted words with coordinates
-                st.write("### Word-level Extraction")
-                for word in pred_page.iterate_cells(unit_type=TextCellUnit.WORD):
-                    st.text(f"{word.rect}: {word.text}")
-
-                # Render image of characters
-                st.write("### Character-level Image")
-                img = pred_page.render_as_image(cell_unit=TextCellUnit.CHAR)
-                st.image(img, caption=f"Rendered Characters - Page {page_no}")
+            summary = summarizer.summarize_pdf("temp.pdf")
+            st.write("PDF summarization completed.")
 
         elif file_type in ["image/png", "image/jpeg", "image/jpg"]:
             # Handle image files
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Uploaded Image", use_container_width=True)
+            with open("temp_image", "wb") as f:
+                f.write(uploaded_file.getbuffer())
 
-            try:
-                # Extract text using pytesseract
-                extracted_text = pytesseract.image_to_string(image)
-                st.write("### Extracted Text from Image:")
-                st.text(extracted_text)
-            except Exception as e:
-                st.error(f"Error extracting text from image: {e}")
+            summary = summarizer.summarize_image("temp_image")
+            st.write("Image summarization completed.")
 
         elif file_type == "text/plain":
             # Handle text files
             text_content = uploaded_file.read().decode("utf-8")
-            st.write("### Text File Content:")
-            st.text(text_content)
+            summary = summarizer.summarize_text(text_content)
+            st.write("Text summarization completed.")
 
         else:
             st.warning(f"Unsupported file type: {file_type}")
