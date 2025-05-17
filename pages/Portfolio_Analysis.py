@@ -21,7 +21,7 @@ st.markdown(
 )
 
 st.header("Upload or Paste Your Portfolio")
-R1_exp=st.expander("Instructions")
+R1_exp=st.expander("Instructions", expanded=True)
 R1_exp.markdown(
     """
     1. You can either paste your portfolio data in the text area below or upload a CSV/Excel file.
@@ -35,7 +35,7 @@ R1_exp.markdown(
         - P&L
     3. Click on 'Run Portfolio Analysis' to get stock-wise recommendations.
 
-    [Download Sample Portfolio CSV](https://drive.google.com/file/d/16mpP2pJzNfmMoMcmeHyB9b7tCvlbtM_H/view?usp=drive_link)
+    [Download Sample Portfolio CSV](./holdings.csv)
     """
 )
 portfolio_text = st.text_area("Paste your portfolio data (CSV or tabular format)", height=120, placeholder="INSTRUMENT\tQTY.\tAVG. COST\tLTP\tINVESTED\tCUR. VAL\tP&L\nASIANPAINT\t15\t2586.67\t2353.15\t38800\t35297.25\t-3502.75\n...")
