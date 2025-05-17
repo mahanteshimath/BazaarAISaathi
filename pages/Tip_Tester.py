@@ -5,12 +5,11 @@ import tempfile
 # Add docling import
 try:
     from docling.ocr import ocr_image
-    from docling.document_converter import DocumentConverter, PdfFormatOption
-    from docling.datamodel.pipeline_options import PdfPipelineOptions
-    from docling.datamodel.base_models import InputFormat
+    from docling_parse.pdf_parser import DoclingPdfParser
+    from docling_core.types.doc.page import TextCellUnit
 except ImportError:
     ocr_image = None
-    DocumentConverter = None
+    DoclingPdfParser = None
 
 st.title("Tip or Investment Advice Tester")
 st.write("This app allows you to test the performance of your investment advice or tip. You can input the details of your investment, including the amount, duration, and expected return. The app will then calculate the potential profit or loss based on your inputs.")
@@ -18,42 +17,37 @@ st.write("This app allows you to test the performance of your investment advice 
 # Add input for text-based advice
 tip_text = st.text_area("Enter your investment advice or tip", placeholder="Type your investment advice or tip here...")
 
-# Add file uploader for screenshot of advice
-uploaded_file = st.file_uploader("Upload a screenshot of your investment advice (optional)", type=["png", "jpg", "jpeg"])
-
-# Add input for PDF URL
-pdf_url = st.text_input("Or enter a PDF URL to extract advice (optional)", placeholder="https://...")
-
-pdf_extracted_text = None
-if pdf_url and DocumentConverter is not None:
-    try:
-        pipeline_options = PdfPipelineOptions()
-        pipeline_options.do_code_enrichment = True
-        converter = DocumentConverter(format_options={
-            InputFormat.PDF: PdfFormatOption(pipeline_options=pipeline_options)
-        })
-        with st.spinner("Extracting text from PDF..."):
-            result = converter.convert(pdf_url)
-            doc = result.document
-            pdf_extracted_text = doc.text if hasattr(doc, "text") else str(doc)
-        if pdf_extracted_text:
-            st.subheader("Extracted Text from PDF:")
-            st.write(pdf_extracted_text)
-            if st.checkbox("Use extracted PDF text as tip/advice", key="pdf", value=True):
-                tip_text = pdf_extracted_text
-    except Exception as e:
-        st.warning(f"Could not extract text from PDF: {e}")
-elif pdf_url and DocumentConverter is None:
-    st.warning("docling package is not installed. Please install it to enable PDF extraction functionality.")
+# Add file uploader for screenshot or PDF of advice
+uploaded_file = st.file_uploader("Upload a screenshot or PDF of your investment advice (optional)", type=["png", "jpg", "jpeg", "pdf"])
 
 extracted_text = None
 if uploaded_file:
-    st.image(uploaded_file, caption="Uploaded Screenshot", use_container_width=True)
-    if ocr_image is not None:
-        # Read image bytes and run OCR
+    filetype = uploaded_file.type
+    if filetype == "application/pdf" and DoclingPdfParser is not None:
+        # Handle PDF extraction
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+            tmp.write(uploaded_file.read())
+            tmp_path = tmp.name
+        try:
+            parser = DoclingPdfParser()
+            pdf_doc = parser.load(path_or_stream=tmp_path)
+            words = []
+            for page_no, pred_page in pdf_doc.iterate_pages():
+                for word in pred_page.iterate_cells(unit_type=TextCellUnit.WORD):
+                    words.append(word.text)
+            extracted_text = " ".join(words)
+        except Exception as e:
+            extracted_text = None
+            st.warning(f"Could not extract text from PDF: {e}")
+        if extracted_text:
+            st.subheader("Extracted Text from PDF:")
+            st.write(extracted_text)
+            if st.checkbox("Use extracted PDF text as tip/advice", key="pdf", value=True):
+                tip_text = extracted_text
+    elif filetype in ["image/png", "image/jpeg"] and ocr_image is not None:
+        st.image(uploaded_file, caption="Uploaded Screenshot", use_container_width=True)
         image_bytes = uploaded_file.read()
         try:
-            # Save the uploaded file temporarily
             with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp:
                 tmp.write(image_bytes)
                 tmp_path = tmp.name
@@ -64,9 +58,10 @@ if uploaded_file:
         if extracted_text:
             st.subheader("Extracted Text from Image:")
             st.write(extracted_text)
-            # Optionally, allow user to use extracted text as tip_text
             if st.checkbox("Use extracted text as tip/advice", value=True):
                 tip_text = extracted_text
+    elif filetype == "application/pdf":
+        st.warning("docling-parse package is not installed. Please install it to enable PDF extraction functionality.")
     else:
         st.warning("docling package is not installed. Please install it to enable OCR functionality.")
 
