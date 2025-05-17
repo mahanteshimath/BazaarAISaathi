@@ -21,3 +21,4 @@ docling-parse
 pytesseract
 Pillow
 easyocr
+nest_asyncio
