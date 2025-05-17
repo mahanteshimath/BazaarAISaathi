@@ -17,34 +17,35 @@ summarizer = FinanceDocumentSummarizer()
 uploaded_files = st.file_uploader("Upload files (PDF, PPT, Images, Text)", type=["pdf", "png", "jpg", "jpeg", "txt"], accept_multiple_files=True)
 
 if uploaded_files:
-    for uploaded_file in uploaded_files:
-        file_type = uploaded_file.type
-        st.subheader(f"Processing File: {uploaded_file.name}")
+    if st.button("Summarize"):
+        for uploaded_file in uploaded_files:
+            file_type = uploaded_file.type
+            st.subheader(f"Processing File: {uploaded_file.name}")
 
-        if file_type == "application/pdf":
-            # Handle PDF files
-            with open("temp.pdf", "wb") as f:
-                f.write(uploaded_file.getbuffer())
+            if file_type == "application/pdf":
+                # Handle PDF files
+                with open("temp.pdf", "wb") as f:
+                    f.write(uploaded_file.getbuffer())
 
-            summary = summarizer.summarize_pdf("temp.pdf")
-            st.write("PDF summarization completed.")
+                summary = summarizer.summarize_pdf("temp.pdf")
+                st.write("PDF summarization completed.")
 
-        elif file_type in ["image/png", "image/jpeg", "image/jpg"]:
-            # Handle image files
-            with open("temp_image", "wb") as f:
-                f.write(uploaded_file.getbuffer())
+            elif file_type in ["image/png", "image/jpeg", "image/jpg"]:
+                # Handle image files
+                with open("temp_image", "wb") as f:
+                    f.write(uploaded_file.getbuffer())
 
-            summary = summarizer.summarize_image("temp_image")
-            st.write("Image summarization completed.")
+                summary = summarizer.summarize_image("temp_image")
+                st.write("Image summarization completed.")
 
-        elif file_type == "text/plain":
-            # Handle text files
-            text_content = uploaded_file.read().decode("utf-8")
-            summary = summarizer.summarize_text(text_content)
-            st.write("Text summarization completed.")
+            elif file_type == "text/plain":
+                # Handle text files
+                text_content = uploaded_file.read().decode("utf-8")
+                summary = summarizer.summarize_text(text_content)
+                st.write("Text summarization completed.")
 
-        else:
-            st.warning(f"Unsupported file type: {file_type}")
+            else:
+                st.warning(f"Unsupported file type: {file_type}")
 
 # Footer
 footer = """<style>

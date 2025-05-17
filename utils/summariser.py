@@ -2,6 +2,8 @@ import pytesseract
 from PIL import Image
 from docling_parse.pdf_parser import DoclingPdfParser, PdfDocument
 from docling_core.types.doc.page import TextCellUnit
+import requests
+import json
 
 class FinanceDocumentSummarizer:
     """A class to summarize finance documents including PDFs, images, and text files."""
@@ -57,3 +59,55 @@ class FinanceDocumentSummarizer:
             dict: A dictionary containing the text content.
         """
         return {"text": text_content}
+
+    def summarize_with_api(self, text_content, api_key):
+        """Summarize the given text content using an external API.
+
+        Args:
+            text_content (str): The text content to summarize.
+            api_key (str): The API key for authentication.
+
+        Returns:
+            dict: A dictionary containing the summarized content or an error message.
+        """
+        api_endpoint = "https://api.perplexity.ai/chat/completions"
+
+        payload = {
+            "model": "sonar",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "Summarize the provided text content."
+                },
+                {
+                    "role": "user",
+                    "content": text_content
+                }
+            ],
+            "web_search_options": {
+                "user_location": {"country": "IN"}
+            }
+        }
+
+        try:
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            }
+            response = requests.post(api_endpoint, json=payload, headers=headers, timeout=30)
+            result = response.json()
+
+            if 'choices' in result and len(result['choices']) > 0:
+                message = result['choices'][0]['message']
+                content = message.get('content', '')
+                citations = result.get('citations', [])
+
+                return {
+                    'content': content,
+                    'citations': citations
+                }
+            return result
+        except requests.RequestException as e:
+            return {"error": f"API request failed: {str(e)}"}
+        except json.JSONDecodeError as e:
+            return {"error": f"Failed to parse response: {str(e)}"}
