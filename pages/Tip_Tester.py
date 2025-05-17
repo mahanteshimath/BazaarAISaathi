@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.tip_analysis import analyze_tip_or_advice
+import tempfile
 
 # Add docling import
 try:
@@ -23,7 +24,11 @@ if uploaded_file:
         # Read image bytes and run OCR
         image_bytes = uploaded_file.read()
         try:
-            extracted_text = ocr_image(image_bytes)
+            # Save the uploaded file temporarily
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp:
+                tmp.write(image_bytes)
+                tmp_path = tmp.name
+                extracted_text = ocr_image(tmp_path)
         except Exception as e:
             extracted_text = None
             st.warning(f"Could not extract text from image: {e}")
@@ -61,11 +66,11 @@ st.markdown(
     <style>
     .streamlit-expanderHeader {
         background-color: blue;
-        color: white; # Adjust this for expander header color
+        color: white; /* Adjust this for expander header color */
     }
     .streamlit-expanderContent {
         background-color: blue;
-        color: white; # Expander content color
+        color: white; /* Expander content color */
     }
     </style>
     ''',
@@ -85,7 +90,7 @@ text-align: center;
 }
 </style>
 <div class="footer">
-<p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
+<p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/ " target="_blank">MAHANTESH HIREMATH</a></p>
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
