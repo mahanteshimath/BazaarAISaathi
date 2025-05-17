@@ -26,7 +26,6 @@ if st.button("Summarize"):
                 st.subheader(f"Processing Link: {link}")
                 try:
                     summary = summarizer.summarize_with_api(link, api_key)
-                    st.write("Summarization completed.")
                     if 'content' in summary:
                         st.markdown(f"### Summary for {link}")
                         st.markdown(summary['content'])

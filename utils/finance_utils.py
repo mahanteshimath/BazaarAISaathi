@@ -45,7 +45,7 @@ def ask_finance_question(question, api_key):
         "messages": [
             {
                 "role": "system",
-                "content": "Answer the question as a finance expert."
+                "content": "Answer the question as a finance expert. Include relevant citations and sources for the information provided."
             },
             {
                 "role": "user",
@@ -70,6 +70,9 @@ def ask_finance_question(question, api_key):
         if 'choices' in result and len(result['choices']) > 0:
             message = result['choices'][0]['message']
             content = message.get('content', '')
+            citations = message.get('citations', [])
+            if citations:
+                content += "\n\nSources:\n" + "\n".join([f"- {cite}" for cite in citations])
             return content
         return result
     except requests.RequestException as e:
