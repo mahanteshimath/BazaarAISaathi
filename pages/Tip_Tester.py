@@ -1,13 +1,13 @@
 import streamlit as st
 from utils.tip_analysis import analyze_tip_or_advice
 import tempfile
-from PIL import Image
-import pytesseract
-import os
+import easyocr
+import numpy as np
 
-# Configure tesseract path for Windows
-if os.name == 'nt':  # for Windows
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Initialize EasyOCR reader (only needs to be done once)
+@st.cache_resource
+def load_ocr_reader():
+    return easyocr.Reader(['en'])
 
 st.title("Tip or Investment Advice Tester")
 st.write("This app allows you to test the performance of your investment advice or tip. You can input the details of your investment, including the amount, duration, and expected return. The app will then calculate the potential profit or loss based on your inputs.")
@@ -22,10 +22,12 @@ extracted_text = None
 if uploaded_file:
     st.image(uploaded_file, caption="Uploaded Screenshot", use_container_width=True)
     try:
-        # Open the image using PIL
-        image = Image.open(uploaded_file)
-        # Extract text using pytesseract
-        extracted_text = pytesseract.image_to_string(image)
+        # Convert uploaded file to numpy array
+        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+        reader = load_ocr_reader()
+        # Extract text using EasyOCR
+        results = reader.readtext(file_bytes)
+        extracted_text = ' '.join([text[1] for text in results])
         if extracted_text:
             st.subheader("Extracted Text from Image:")
             st.write(extracted_text)

@@ -20,3 +20,4 @@ docling
 docling-parse
 pytesseract
 Pillow
+easyocr
