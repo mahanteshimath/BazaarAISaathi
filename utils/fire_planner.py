@@ -1,7 +1,11 @@
 import requests
 import json
 
-def generate_fire_plan(age, salary, years, essentials, non_essentials, savings_pct, investment_types, side_income, skills, api_key):
+def generate_fire_plan(
+    age, salary, years, essentials, non_essentials, savings_pct,
+    investment_types, side_income, skills, api_key,
+    marital_status=None, kids=None
+):
     """
     Generate a FIRE plan using the provided user inputs and an external API.
     """
@@ -15,10 +19,15 @@ def generate_fire_plan(age, salary, years, essentials, non_essentials, savings_p
         f"Additionally, outline any skills ({skills}) that could be developed to increase earning potential over this period. "
         f"Consider inflation and cost of living increases during the next {years} years."
     )
+    # Add marital status and kids to prompt if provided
+    if marital_status is not None:
+        prompt += f" The user is {marital_status.lower()}."
+    if kids is not None and int(kids) > 0:
+        prompt += f" The user has {kids} kid(s). Please consider family needs in the plan."
     payload = {
         "model": "sonar-pro",
         "messages": [
-            {"role": "system", "content": "You are a 30+ years financial planning expert, Helping use client to achive FIRE amount with detailed plan."},
+            {"role": "system", "content": "You are a 30+ years financial planning expert, Helping  client to achive Financial Independence Retire Early with detailed plan."},
             {"role": "user", "content": prompt}
         ],
         "web_search_options": {
