@@ -17,7 +17,7 @@ try:
 
     # -------------------- Initialization --------------------
     # API key and model initialization
-    llm = ChatPerplexity(model="sonar-reasoning-pro", 
+    llm = ChatPerplexity(model="sonar-deep-research", 
                         #  temperature=0.5, 
                          pplx_api_key=st.secrets["PERPLEXITY_API_KEY"])
 
@@ -28,6 +28,7 @@ try:
         prompt=PromptTemplate(
             input_variables=["Listed_Name"],
             template=(
+                "Act as an investor with 50 years of experience. Provide a comprehensive analysis of the given {Listed_Name}. This should include a thorough evaluation of the company financial health, its competitive position in the industry, and any macroeconomic factors that could impact its performance. The analysis should also include an assessment of the stock's valuation, taking into account its projected earnings growth and other key financial metrics. Based on your analysis, provide a recommendation on whether to buy, hold, or sell the stock. Your analysis should be backed with supporting data and reasoning."
                 "📈 For {Listed_Name}, provide detailed and up-to-date financial data. Include current stock price, "
                 "volume, key financial ratios (e.g., P/E, P/B, dividend yield), recent price trends, and relevant market indicators."
             )
