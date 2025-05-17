@@ -72,7 +72,6 @@ def get_top_gainers_and_losers(api_key):
             "user_location": {"country": "IN"}
         }
     }
-    }
 
     try:
         headers = {
