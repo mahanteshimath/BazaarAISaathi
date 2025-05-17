@@ -36,7 +36,6 @@ def get_top_10_learnings(book_name, api_key):
         return {"error": f"API request failed: {str(e)}"}
     except json.JSONDecodeError as e:
         return {"error": f"Failed to parse response: {str(e)}"}
-
 def ask_finance_question(question, api_key):
     api_endpoint = "https://api.perplexity.ai/chat/completions"
 
@@ -54,7 +53,7 @@ def ask_finance_question(question, api_key):
         ],
         "web_search_options": {
             "user_location": {
-            "country": "IN"
+                "country": "IN"
             }
         }
     }
@@ -71,6 +70,7 @@ def ask_finance_question(question, api_key):
             message = result['choices'][0]['message']
             content = message.get('content', '')
             citations = result.get('citations', [])
+            
             return {
                 'content': content,
                 'citations': citations
