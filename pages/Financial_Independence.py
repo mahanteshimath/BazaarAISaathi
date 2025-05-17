@@ -27,7 +27,23 @@ if submitted:
             st.error(f"Error: {fire_result['error']}")
         elif isinstance(fire_result, dict):
             st.subheader("FIRE Plan Result")
-            st.write(fire_result.get("content", "No content available"))
+            content = fire_result.get("content", "No content available")
+            # Split content into lines and render LaTeX where appropriate
+            for line in content.splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                # Detect LaTeX block expressions
+                if line.startswith("$$") and line.endswith("$$"):
+                    st.latex(line[2:-2])
+                elif line.startswith("$") and line.endswith("$"):
+                    st.latex(line[1:-1])
+                elif line.startswith("\\[") and line.endswith("\\]"):
+                    st.latex(line[2:-2])
+                elif line.startswith("\\(") and line.endswith("\\)"):
+                    st.latex(line[2:-2])
+                else:
+                    st.markdown(line)
             citations = fire_result.get("citations", [])
             if citations:
                 st.subheader("Citations")
