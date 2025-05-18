@@ -2,8 +2,6 @@ import streamlit as st
 
 import streamlit.components.v1 as components
 
-
-
 # Load the HTML content from the file
 with open("./src/Architecture_app.txt", "r") as file:
     html_content = file.read()
