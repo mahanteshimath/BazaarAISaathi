@@ -35,8 +35,8 @@ if "session_cached" not in st.session_state:
     st.session_state["session_cached"] = None
 if "customer_details" not in st.session_state:
     st.session_state["customer_details"] = None
-if "historical_data" not in st.session_state:
-    st.session_state["historical_data"] = None
+# if "historical_data" not in st.session_state:
+#     st.session_state["historical_data"] = None
 
 # Function to connect and fetch data
 def connect_and_fetch():
