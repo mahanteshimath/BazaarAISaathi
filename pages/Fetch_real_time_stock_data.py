@@ -8,13 +8,26 @@ import pandas as pd
 st.title("Fetch Real-Time Stock Data")
 st.write("This allows you to fetch real-time stock data using the ICICI Direct API. Please enter your API credentials to get started.")
 
-# Input fields for API credentials
-api_key = st.text_input("Enter API Key:", type="password")
-api_secret = st.text_input("Enter API Secret:", type="password")
-session_token = st.text_input("Enter Session Token:", type="password")
+# Use Streamlit columns to organize input fields into two columns
+col1, col2 = st.columns(2)
 
-# Initialize SDK
-breeze = BreezeConnect(api_key=api_key)
+# Input fields for API credentials in the first column
+with col1:
+    api_key = st.text_input("Enter API Key:", type="password")
+    api_secret = st.text_input("Enter API Secret:", type="password")
+
+# Input fields for session token and historical data parameters in the second column
+with col2:
+    session_token = st.text_input("Enter Session Token:", type="password")
+    from_date = st.text_input("From Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:20:00.000Z")
+    to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z")
+    stock_code = st.text_input("Stock Code:", "RELIND")
+
+# Initialize SDK only if API Key is provided
+if api_key:
+    breeze = BreezeConnect(api_key=api_key)
+else:
+    breeze = None
 
 # Display session key URL
 st.write("Obtain your session key from the following URL:")
@@ -133,16 +146,6 @@ def fetch_and_display_historical_data(from_date, to_date, stock_code):
         st.line_chart(df[['open', 'high', 'low', 'close']])
     except Exception as e:
         st.error(f"Error fetching historical data: {e}")
-
-# Input fields for historical data parameters
-st.markdown("### Historical Data Parameters")
-from_date = st.text_input("From Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:20:00.000Z")
-to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z")
-stock_code = st.text_input("Stock Code:", "RELIND")
-
-# Button to fetch and display historical data
-if st.button("Fetch Historical Data"):
-    fetch_and_display_historical_data(from_date, to_date, stock_code)
 
 # Buttons to trigger actions
 if st.button("Connect"):
