@@ -169,12 +169,12 @@ col3, col4 = st.columns(2)
 # Input fields for API credentials in the first column
 with col3:
     interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"])
-    from_date = st.text_input("From Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:20:00.000Z")
+    from_date = st.text_input("From Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:20:00.000Z", key="historical_from_date")
 
 # Input fields for session token and historical data parameters in the second column
 with col4:
-    to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z")
-    stock_code = st.text_input("Stock Code:", "RELIND")
+    to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z", key="historical_to_date")
+    stock_code = st.text_input("Stock Code:", "RELIND", key="historical_stock_code")
 
 
 if st.button("Fetch Historical Data"):
