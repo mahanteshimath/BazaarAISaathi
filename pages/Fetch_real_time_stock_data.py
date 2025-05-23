@@ -3,6 +3,10 @@ from breeze_connect import BreezeConnect
 import urllib
 import numpy as np
 
+# Input fields for API secret and session token
+api_secret = st.text_input("Enter API Secret:", type="password")
+session_token = st.text_input("Enter Session Token:", type="password")
+
 # Initialize SDK
 breeze = BreezeConnect(api_key="your_api_key")
 
@@ -10,9 +14,7 @@ breeze = BreezeConnect(api_key="your_api_key")
 st.write("Obtain your session key from the following URL:")
 st.code("https://api.icicidirect.com/apiuser/login?api_key=" + urllib.parse.quote_plus("your_api_key"))
 
-# Input fields for API secret and session token
-api_secret = st.text_input("Enter API Secret:", type="password")
-session_token = st.text_input("Enter Session Token:", type="password")
+
 
 # Add a button to connect
 if st.button("Connect"):
