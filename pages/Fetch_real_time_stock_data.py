@@ -3,12 +3,13 @@ from breeze_connect import BreezeConnect
 import urllib
 import numpy as np
 
-# Input fields for API secret and session token
+# Input fields for API key, API secret, and session token
+api_key = st.text_input("Enter API Key:", type="password")
 api_secret = st.text_input("Enter API Secret:", type="password")
 session_token = st.text_input("Enter Session Token:", type="password")
 
 # Initialize SDK
-breeze = BreezeConnect(api_key="your_api_key")
+breeze = BreezeConnect(api_key=api_key)
 
 # Obtain your session key from the URL
 st.write("Obtain your session key from the following URL:")
@@ -21,11 +22,12 @@ if st.button("Connect"):
     try:
         breeze.generate_session(api_secret=api_secret, session_token=session_token)
         st.success("Connected successfully!")
+
+        # Connect to WebSocket (it will connect to tick-by-tick data server)
+        breeze.ws_connect()
+        st.success("WebSocket connected successfully!")
     except Exception as e:
         st.error(f"Error connecting: {e}")
-
-# Connect to WebSocket (it will connect to tick-by-tick data server)
-breeze.ws_connect()
 
 # Callback to receive ticks
 def on_ticks(ticks):
