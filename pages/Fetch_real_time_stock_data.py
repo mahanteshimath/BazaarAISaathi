@@ -175,20 +175,31 @@ with col3:
     # Updated input fields for date and time selection
     from_date_date = st.date_input("From Date:", key="from_date_date")
     from_date_time = st.time_input("From Time:", key="from_date_time")
-    to_date_date = st.date_input("To Date:", key="to_date_date")
-    to_date_time = st.time_input("To Time:", key="to_date_time")
+    
 
-    # Convert selected date and time to ISO 8601 format
-    from_date = f"{from_date_date}T{from_date_time}:00.000Z"
-    to_date = f"{to_date_date}T{to_date_time}:00.000Z"
-    st.write(f"From Date: {from_date}")
-    st.write(f"To Date: {to_date}")
 
 # Input fields for session token and historical data parameters in the second column
 with col4:
+    to_date_date = st.date_input("To Date:", key="to_date_date")
+    to_date_time = st.time_input("To Time:", key="to_date_time")
     stock_code = st.text_input("Stock Code:", "RELIND", key="historical_stock_code")
     
 
+
+# Convert selected date and time to ISO 8601 format
+from_date = f"{from_date_date}T{from_date_time}:00.000Z"
+to_date = f"{to_date_date}T{to_date_time}:00.000Z"
+st.write(f"From Date: {from_date}")
+st.write(f"To Date: {to_date}")
+
+st.markdown("""breeze.get_historical_data(
+            interval={interval},
+            from_date={from_date},
+            to_date={to_date},
+            stock_code={stock_code},
+            exchange_code='NSE',
+            product_type='cash'
+        )""")
 
 if st.button("Fetch Historical Data"):
     fetch_and_display_historical_data(interval, from_date, to_date, stock_code)
