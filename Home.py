@@ -74,6 +74,11 @@ Financial_Independence = st.Page(
     icon=":material/money_off:",
 )
 
+Fetch_real_time_stock_data = st.Page(
+    "pages/Fetch_real_time_stock_data.py",
+    title="Fetch Real-time Stock Data",
+    icon=":material/api:",
+)
 # Finance_doc_summarize = st.Page(
 #     "pages/Finance_doc_summarize.py",
 #     title="Finance Document Summarizer",
@@ -85,7 +90,7 @@ pg = st.navigation(
         "Info": [Hypothesis_page,Architecture_page],
         "Indian Stock market": [Stocks_list,Indicators,Finance_with_Perplexity],
         "Stock Analysis": [Techno_Fund_Analysis,Deep_Research,Tip_Tester],
-        "Portfolio": [Portfolio_Analysis,Financial_Independence],
+        "Portfolio": [Portfolio_Analysis,Financial_Independence,Fetch_real_time_stock_data],
 
     }
 )
