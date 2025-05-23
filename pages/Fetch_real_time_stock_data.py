@@ -52,15 +52,15 @@ def connect_and_fetch():
         # Fetch customer details
         st.session_state["customer_details"] = breeze.get_customer_details(api_session=session_token)
 
-        # Fetch historical data
-        st.session_state["historical_data"] = breeze.get_historical_data(
-            interval="1minute",
-            from_date="2025-02-03T09:20:00.000Z",
-            to_date="2025-02-03T09:22:00.000Z",
-            stock_code="RELIND",
-            exchange_code="NSE",
-            product_type="cash"
-        )
+        # # Fetch historical data
+        # st.session_state["historical_data"] = breeze.get_historical_data(
+        #     interval="1minute",
+        #     from_date="2025-02-03T09:20:00.000Z",
+        #     to_date="2025-02-03T09:22:00.000Z",
+        #     stock_code="RELIND",
+        #     exchange_code="NSE",
+        #     product_type="cash"
+        # )
 
         # Connect to WebSocket
         breeze.ws_connect()
@@ -158,6 +158,11 @@ if st.button("Disconnect WebSocket"):
 if st.session_state["customer_details"]:
     display_customer_details()
 
+
+st.markdown("### Fetch Historical Data")
+if st.button("Fetch Historical Data"):
+    fetch_and_display_historical_data(from_date, to_date, stock_code)
+    
 # Footer
 footer = """<style>
 .footer {

@@ -22,4 +22,4 @@ pytesseract
 Pillow
 easyocr
 nest_asyncio
-breeze-connect
+breeze-connect==1.0.62
