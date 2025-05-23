@@ -19,9 +19,6 @@ with col1:
 # Input fields for session token and historical data parameters in the second column
 with col2:
     session_token = st.text_input("Enter Session Token:", type="password")
-    from_date = st.text_input("From Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:20:00.000Z")
-    to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z")
-    stock_code = st.text_input("Stock Code:", "RELIND")
 
 # Initialize SDK only if API Key is provided
 if api_key:
