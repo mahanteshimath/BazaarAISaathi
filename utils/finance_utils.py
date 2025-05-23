@@ -72,7 +72,7 @@ def ask_finance_question(question, api_key):
             citations = result.get('citations', [])
 
             # Format content as Markdown
-            markdown_response = f"### Answer\n\n{content}\n\n"
+            markdown_response = f"\n\n{content}\n\n"
             if citations:
                 markdown_response += "\n### Sources\n"
                 for citation in citations:
