@@ -7,7 +7,7 @@ import streamlit.components.v1 as components
 with open("./src/Architecture_app.txt", "r") as file:
     html_content = file.read()
 
-components.html(html_content, width=100, height=600)
+components.html(html_content, width=1000, height=600)
 
 st.markdown(
     '''
