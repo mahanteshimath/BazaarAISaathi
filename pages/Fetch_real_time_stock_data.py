@@ -170,8 +170,9 @@ with col3:
 
 # Input fields for session token and historical data parameters in the second column
 with col4:
-    to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z", key="historical_to_date")
     stock_code = st.text_input("Stock Code:", "RELIND", key="historical_stock_code")
+    to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z", key="historical_to_date")
+    
 
 
 if st.button("Fetch Historical Data"):
