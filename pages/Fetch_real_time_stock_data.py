@@ -17,13 +17,42 @@ st.code("https://api.icicidirect.com/apiuser/login?api_key=" + urllib.parse.quot
 
 
 
+# Cache session and fetched data
+if "session_cached" not in st.session_state:
+    st.session_state["session_cached"] = None
+if "customer_details" not in st.session_state:
+    st.session_state["customer_details"] = None
+if "historical_data" not in st.session_state:
+    st.session_state["historical_data"] = None
+
 # Add a button to connect
 if st.button("Connect"):
     try:
+        # Generate session and cache it
         breeze.generate_session(api_secret=api_secret, session_token=session_token)
+        st.session_state["session_cached"] = True
         st.success("Connected successfully!")
 
-        # Connect to WebSocket (it will connect to tick-by-tick data server)
+        # Fetch customer details
+        customer_details = breeze.get_customer_details(api_session=session_token)
+        st.session_state["customer_details"] = customer_details
+        st.markdown("### Customer Details")
+        st.json(customer_details)
+
+        # Fetch historical data
+        historical_data = breeze.get_historical_data(
+            interval="1minute",
+            from_date="2025-02-03T09:20:00.000Z",
+            to_date="2025-02-03T09:22:00.000Z",
+            stock_code="RELIND",
+            exchange_code="NSE",
+            product_type="cash"
+        )
+        st.session_state["historical_data"] = historical_data
+        st.markdown("### Historical Data")
+        st.json(historical_data)
+
+        # Connect to WebSocket
         breeze.ws_connect()
         st.success("WebSocket connected successfully!")
     except Exception as e:
