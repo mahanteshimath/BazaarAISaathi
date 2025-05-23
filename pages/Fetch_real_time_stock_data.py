@@ -192,7 +192,7 @@ to_date = f"{to_date_date}T{to_date_time}:00.000Z"
 st.write(f"From Date: {from_date}")
 st.write(f"To Date: {to_date}")
 
-st.markdown(f"""```python
+st.markdown(f"""
 breeze.get_historical_data(
     interval="{interval}",
     from_date="{from_date}",
