@@ -207,7 +207,7 @@ This code will:
 2. Display the code block with proper syntax highlighting
 3. Show the actual values of interval, from_date, to_date, and stock_code
 4. Format it as a proper code block in the Streamlit UI
-
+"""")
 if st.button("Fetch Historical Data"):
     fetch_and_display_historical_data(interval, from_date, to_date, stock_code)
 
