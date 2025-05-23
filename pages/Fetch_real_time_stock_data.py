@@ -3,6 +3,10 @@ from breeze_connect import BreezeConnect
 import urllib
 import numpy as np
 
+st.title("Fetch Real-Time Stock Data")
+st.write("This app allows you to fetch real-time stock data using the ICICI Direct API. Please enter your API credentials to get started.")
+
+
 # Input fields for API key, API secret, and session token
 api_key = st.text_input("Enter API Key:", type="password")
 api_secret = st.text_input("Enter API Secret:", type="password")
@@ -153,21 +157,11 @@ if st.session_state["customer_details"]:
 
 # Update the display of historical data
 if st.session_state["historical_data"]:
+    import pandas as pd
     historical_data = st.session_state["historical_data"]['Success']
+    df = pd.DataFrame(historical_data)
     st.markdown("### Historical Data")
-    st.markdown("| DateTime | Stock Code | Exchange Code | Open | High | Low | Close | Volume |")
-    st.markdown("|----------|------------|---------------|------|------|-----|-------|--------|")
-    for record in historical_data:
-        st.markdown("| {datetime} | {stock_code} | {exchange_code} | {open} | {high} | {low} | {close} | {volume} |".format(
-            datetime=record['datetime'],
-            stock_code=record['stock_code'],
-            exchange_code=record['exchange_code'],
-            open=record['open'],
-            high=record['high'],
-            low=record['low'],
-            close=record['close'],
-            volume=record['volume']
-        ))
+    st.dataframe(df)
 
 st.markdown(
     '''
