@@ -71,10 +71,14 @@ def ask_finance_question(question, api_key):
             content = message.get('content', '')
             citations = result.get('citations', [])
 
-            return {
-                'content': content,
-                'citations': citations
-            }
+            # Format content as Markdown
+            markdown_response = f"### Answer\n\n{content}\n\n"
+            if citations:
+                markdown_response += "\n### Sources\n"
+                for citation in citations:
+                    markdown_response += f"- {citation}\n"
+
+            return markdown_response
         return result
     except requests.RequestException as e:
         return {"error": f"API request failed: {str(e)}"}
