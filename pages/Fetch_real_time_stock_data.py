@@ -181,6 +181,8 @@ with col3:
     # Convert selected date and time to ISO 8601 format
     from_date = f"{from_date_date}T{from_date_time}:00.000Z"
     to_date = f"{to_date_date}T{to_date_time}:00.000Z"
+    st.write(f"From Date: {from_date}")
+    st.write(f"To Date: {to_date}")
 
 # Input fields for session token and historical data parameters in the second column
 with col4:
