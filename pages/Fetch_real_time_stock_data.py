@@ -150,9 +150,6 @@ if st.button("Disconnect WebSocket"):
 if st.session_state["customer_details"]:
     display_customer_details()
 
-if st.session_state["historical_data"]:
-    display_historical_data()
-
 # Footer
 footer = """<style>
 .footer {
