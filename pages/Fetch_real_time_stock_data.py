@@ -102,7 +102,7 @@ def display_customer_details():
             currency=customer_details['Success']['segments_allowed']['Currency']
         ))
 
-# Function to fetch and display historical data with parameters
+# Updated the fetch_and_display_historical_data function to handle cases where historical data is None
 def fetch_and_display_historical_data(from_date, to_date, stock_code):
     try:
         # Fetch historical data
@@ -114,6 +114,11 @@ def fetch_and_display_historical_data(from_date, to_date, stock_code):
             exchange_code="NSE",
             product_type="cash"
         )
+
+        # Check if historical data is None
+        if not st.session_state["historical_data"] or "Success" not in st.session_state["historical_data"]:
+            st.error("No historical data found for the given parameters.")
+            return
 
         # Display historical data in a dataframe
         historical_data = st.session_state["historical_data"]['Success']
