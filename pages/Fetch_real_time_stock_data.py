@@ -116,11 +116,11 @@ def display_customer_details():
         ))
 
 # Updated the fetch_and_display_historical_data function to handle cases where historical data is None
-def fetch_and_display_historical_data(from_date, to_date, stock_code):
+def fetch_and_display_historical_data(interval,from_date, to_date, stock_code):
     try:
         # Fetch historical data
         st.session_state["historical_data"] = breeze.get_historical_data(
-            interval="1minute",
+            interval=interval,
             from_date=from_date,
             to_date=to_date,
             stock_code=stock_code,
@@ -158,11 +158,28 @@ if st.button("Disconnect WebSocket"):
 if st.session_state["customer_details"]:
     display_customer_details()
 
+st.divider()
 
 st.markdown("### Fetch Historical Data")
+
+
+# Use Streamlit columns to organize input fields into two columns
+col3, col4 = st.columns(2)
+
+# Input fields for API credentials in the first column
+with col3:
+    interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"])
+    from_date = st.text_input("From Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:20:00.000Z")
+
+# Input fields for session token and historical data parameters in the second column
+with col4:
+    to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z")
+    stock_code = st.text_input("Stock Code:", "RELIND")
+
+
 if st.button("Fetch Historical Data"):
-    fetch_and_display_historical_data(from_date, to_date, stock_code)
-    
+    fetch_and_display_historical_data(interval,from_date, to_date, stock_code)
+
 # Footer
 footer = """<style>
 .footer {
