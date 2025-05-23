@@ -25,6 +25,9 @@ if "customer_details" not in st.session_state:
 if "historical_data" not in st.session_state:
     st.session_state["historical_data"] = None
 
+# Add a title to the page
+st.title("Fetch Real-Time Stock Data")
+
 # Add a button to connect
 if st.button("Connect"):
     try:
@@ -106,6 +109,65 @@ def fetch_customer_details():
 # Add a button to fetch customer details
 if st.button("Fetch Customer Details"):
     fetch_customer_details()
+
+# Update the display of customer details
+if st.session_state["customer_details"]:
+    customer_details = st.session_state["customer_details"]
+    st.markdown("### Customer Details")
+    st.markdown("""
+    - **User ID**: {idirect_userid}
+    - **User Name**: {idirect_user_name}
+    - **Last Login Time**: {idirect_lastlogin_time}
+    - **Exchange Trade Dates**:
+        - NSE: {nse_date}
+        - BSE: {bse_date}
+        - FNO: {fno_date}
+        - NDX: {ndx_date}
+    - **Exchange Status**:
+        - NSE: {nse_status}
+        - BSE: {bse_status}
+        - FNO: {fno_status}
+        - NDX: {ndx_status}
+    - **Segments Allowed**:
+        - Trading: {trading}
+        - Equity: {equity}
+        - Derivatives: {derivatives}
+        - Currency: {currency}
+    """.format(
+        idirect_userid=customer_details['Success']['idirect_userid'],
+        idirect_user_name=customer_details['Success']['idirect_user_name'],
+        idirect_lastlogin_time=customer_details['Success']['idirect_lastlogin_time'],
+        nse_date=customer_details['Success']['exg_trade_date']['NSE'],
+        bse_date=customer_details['Success']['exg_trade_date']['BSE'],
+        fno_date=customer_details['Success']['exg_trade_date']['FNO'],
+        ndx_date=customer_details['Success']['exg_trade_date']['NDX'],
+        nse_status=customer_details['Success']['exg_status']['NSE'],
+        bse_status=customer_details['Success']['exg_status']['BSE'],
+        fno_status=customer_details['Success']['exg_status']['FNO'],
+        ndx_status=customer_details['Success']['exg_status']['NDX'],
+        trading=customer_details['Success']['segments_allowed']['Trading'],
+        equity=customer_details['Success']['segments_allowed']['Equity'],
+        derivatives=customer_details['Success']['segments_allowed']['Derivatives'],
+        currency=customer_details['Success']['segments_allowed']['Currency']
+    ))
+
+# Update the display of historical data
+if st.session_state["historical_data"]:
+    historical_data = st.session_state["historical_data"]['Success']
+    st.markdown("### Historical Data")
+    st.markdown("| DateTime | Stock Code | Exchange Code | Open | High | Low | Close | Volume |")
+    st.markdown("|----------|------------|---------------|------|------|-----|-------|--------|")
+    for record in historical_data:
+        st.markdown("| {datetime} | {stock_code} | {exchange_code} | {open} | {high} | {low} | {close} | {volume} |".format(
+            datetime=record['datetime'],
+            stock_code=record['stock_code'],
+            exchange_code=record['exchange_code'],
+            open=record['open'],
+            high=record['high'],
+            low=record['low'],
+            close=record['close'],
+            volume=record['volume']
+        ))
 
 st.markdown(
     '''
