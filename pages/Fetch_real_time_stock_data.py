@@ -102,13 +102,42 @@ def display_customer_details():
             currency=customer_details['Success']['segments_allowed']['Currency']
         ))
 
-# Function to display historical data
-def display_historical_data():
-    if st.session_state["historical_data"]:
+# Function to fetch and display historical data with parameters
+def fetch_and_display_historical_data(from_date, to_date, stock_code):
+    try:
+        # Fetch historical data
+        st.session_state["historical_data"] = breeze.get_historical_data(
+            interval="1minute",
+            from_date=from_date,
+            to_date=to_date,
+            stock_code=stock_code,
+            exchange_code="NSE",
+            product_type="cash"
+        )
+
+        # Display historical data in a dataframe
         historical_data = st.session_state["historical_data"]['Success']
         df = pd.DataFrame(historical_data)
         st.markdown("### Historical Data")
         st.dataframe(df)
+
+        # Display historical data in a chart
+        st.markdown("### Historical Data Chart")
+        df['datetime'] = pd.to_datetime(df['datetime'])
+        df.set_index('datetime', inplace=True)
+        st.line_chart(df[['open', 'high', 'low', 'close']])
+    except Exception as e:
+        st.error(f"Error fetching historical data: {e}")
+
+# Input fields for historical data parameters
+st.markdown("### Historical Data Parameters")
+from_date = st.text_input("From Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:20:00.000Z")
+to_date = st.text_input("To Date (YYYY-MM-DDTHH:MM:SS.000Z):", "2025-02-03T09:22:00.000Z")
+stock_code = st.text_input("Stock Code:", "RELIND")
+
+# Button to fetch and display historical data
+if st.button("Fetch Historical Data"):
+    fetch_and_display_historical_data(from_date, to_date, stock_code)
 
 # Buttons to trigger actions
 if st.button("Connect"):
