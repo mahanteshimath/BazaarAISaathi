@@ -192,14 +192,21 @@ to_date = f"{to_date_date}T{to_date_time}:00.000Z"
 st.write(f"From Date: {from_date}")
 st.write(f"To Date: {to_date}")
 
-st.markdown("""breeze.get_historical_data(
-            interval={interval},
-            from_date={from_date},
-            to_date={to_date},
-            stock_code={stock_code},
-            exchange_code='NSE',
-            product_type='cash'
-        )""")
+st.markdown(f"""```python
+breeze.get_historical_data(
+    interval="{interval}",
+    from_date="{from_date}",
+    to_date="{to_date}",
+    stock_code="{stock_code}",
+    exchange_code="NSE",
+    product_type="cash"
+)
+
+This code will:
+1. Use f-string to interpolate the actual values
+2. Display the code block with proper syntax highlighting
+3. Show the actual values of interval, from_date, to_date, and stock_code
+4. Format it as a proper code block in the Streamlit UI
 
 if st.button("Fetch Historical Data"):
     fetch_and_display_historical_data(interval, from_date, to_date, stock_code)
