@@ -113,8 +113,13 @@ def display_customer_details():
         ))
 
 # Updated the fetch_and_display_historical_data function to handle cases where historical data is None
-def fetch_and_display_historical_data(interval,from_date, to_date, stock_code):
+def fetch_and_display_historical_data(interval, from_date, to_date, stock_code):
     try:
+        # Validate mandatory parameters
+        if not from_date or not to_date or not stock_code:
+            st.error("Please provide valid 'from_date', 'to_date', and 'stock_code' parameters.")
+            return
+
         # Fetch historical data
         st.session_state["historical_data"] = breeze.get_historical_data(
             interval=interval,
