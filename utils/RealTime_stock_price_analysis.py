@@ -25,9 +25,11 @@ def analyze_real_time_stock_data(stock_data, api_key):
                 "role": "user",
                 "content": stock_data
             }
-        ],        "web_search_options": {
+        ],
+        "web_search_options": {
             "user_location": {"country": "IN"}
         }
+    }
 
     try:
         headers = {
