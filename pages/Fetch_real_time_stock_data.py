@@ -14,6 +14,35 @@ import plotly.graph_objects as go
 st.title("Fetch Real-Time Stock Data")
 st.write("This allows you to fetch real-time stock data using the ICICI Direct API. Please enter your API credentials to get started.")
 
+# Helper functions for session state management
+def update_session_with_historical_data(df, stock_code, interval, from_date, to_date, fig):
+    """Update session state with historical data"""
+    st.session_state["historical_data_for_analysis"] = {
+        "dataframe": df,
+        "stock_code": stock_code,
+        "interval": interval,
+        "from_date": from_date,
+        "to_date": to_date,
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    st.session_state["chart_fig"] = fig
+    st.session_state["last_fetched_stock"] = stock_code
+
+def update_session_with_analysis(analysis_result, stock_code, interval):
+    """Update session state with analysis results"""
+    st.session_state["analysis_results"] = {
+        "content": analysis_result["content"],
+        "stock_code": stock_code,
+        "interval": interval,
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
+def clear_session_data():
+    """Clear all session state data"""
+    for var in session_vars:
+        st.session_state[var] = None
+    st.success("Session data cleared successfully!")
+
 # Use Streamlit columns to organize input fields into two columns
 col1, col2 = st.columns(2)
 
@@ -36,13 +65,33 @@ else:
 st.write("Obtain your session key from the following URL:")
 st.code("https://api.icicidirect.com/apiuser/home")
 
+# Initialize session state variables at the top of the file
+session_vars = [
+    "session_cached", 
+    "customer_details", 
+    "historical_data_for_analysis",
+    "analysis_results",
+    "chart_fig",
+    "last_fetched_stock"
+]
+
+for var in session_vars:
+    if var not in st.session_state:
+        st.session_state[var] = None
+
 # Cache session and fetched data
 if "session_cached" not in st.session_state:
     st.session_state["session_cached"] = None
 if "customer_details" not in st.session_state:
     st.session_state["customer_details"] = None
-# if "historical_data" not in st.session_state:
-#     st.session_state["historical_data"] = None
+if "historical_data_for_analysis" not in st.session_state:
+    st.session_state["historical_data_for_analysis"] = None
+if "analysis_results" not in st.session_state:
+    st.session_state["analysis_results"] = None
+if "chart_fig" not in st.session_state:
+    st.session_state["chart_fig"] = None
+if "last_fetched_stock" not in st.session_state:
+    st.session_state["last_fetched_stock"] = None
 
 # Function to connect and fetch data
 def connect_and_fetch():
@@ -253,45 +302,74 @@ if st.button("Fetch Historical Data"):
 
                 # Display the data
                 st.markdown("### Historical Data Table  for " + stock_code)
-                st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")
-                st.dataframe(df)
-
-                # Store the data in session state for analysis
-                st.session_state['historical_data_for_analysis'] = {
-                    'dataframe': df,
-                    'stock_code': stock_code,
-                    'interval': interval,
-                    'from_date': from_date,
-                    'to_date': to_date
-                }
-
-                # Create candlestick chart using plotly
+                st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")                st.dataframe(df)
+                  # Create candlestick chart using plotly
                 st.markdown("### Historical Data Chart")
-                fig = go.Figure(data=[go.Candlestick(x=df.index,
-                                                    open=df['open'],
-                                                    high=df['high'],
-                                                    low=df['low'],
-                                                    close=df['close'],
-                                                    name='OHLC')])
-                
-                # Add volume bars
-                fig.add_trace(go.Bar(x=df.index, y=df['volume'], name='Volume',
-                                   yaxis='y2'))  # Add volume on secondary y-axis
-
-                # Update layout for better visualization
-                fig.update_layout(
-                    title=f'{stock_code} Stock Price',
-                    yaxis_title='Price',
-                    yaxis2=dict(
-                        title='Volume',
-                        overlaying='y',
-                        side='right'
-                    ),
-                    xaxis_rangeslider_visible=False,  # Disable rangeslider for cleaner look
-                    height=600  # Increase height for better visibility
-                )
-
-                st.plotly_chart(fig, use_container_width=True)
+                try:
+                    # Convert numeric data
+                    numeric_cols = ['open', 'high', 'low', 'close', 'volume']
+                    for col in numeric_cols:
+                        df[col] = pd.to_numeric(df[col], errors='coerce')
+                    
+                    fig = go.Figure()
+                    
+                    # Add candlestick trace
+                    fig.add_trace(go.Candlestick(
+                        x=df.index,
+                        open=df['open'],
+                        high=df['high'],
+                        low=df['low'],
+                        close=df['close'],
+                        name='OHLC',
+                        increasing_line_color='#26a69a',
+                        decreasing_line_color='#ef5350'
+                    ))
+                    
+                    # Add volume bars
+                    colors = ['#26a69a' if close >= open else '#ef5350' for close, open in zip(df['close'], df['open'])]
+                    fig.add_trace(go.Bar(
+                        x=df.index,
+                        y=df['volume'],
+                        name='Volume',
+                        marker_color=colors,
+                        yaxis='y2',
+                        opacity=0.7
+                    ))
+                    
+                    # Update layout for better visualization
+                    fig.update_layout(
+                        title=f'{stock_code} Stock Price',
+                        yaxis_title='Price',
+                        yaxis2=dict(
+                            title='Volume',
+                            titlefont=dict(color='#929292'),
+                            tickfont=dict(color='#929292'),
+                            overlaying='y',
+                            side='right',
+                            showgrid=False
+                        ),
+                        xaxis_rangeslider_visible=False,
+                        height=600,
+                        template='plotly_dark',
+                        showlegend=True,
+                        legend=dict(
+                            orientation="h",
+                            yanchor="bottom",
+                            y=1.02,
+                            xanchor="right",
+                            x=1
+                        )
+                    )
+                    
+                    # Store all relevant data in session state
+                    update_session_with_historical_data(df, stock_code, interval, from_date, to_date, fig)
+                    
+                    # Display the chart
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                except Exception as e:
+                    st.error(f"Error creating chart: {str(e)}")
+                    raise e
             else:
                 st.warning("No data available for the selected date range.")
         else:
@@ -350,16 +428,15 @@ if st.button("Run RealTime stock price analysis"):
         
         # Get API key from secrets
         api_key =  st.secrets["PERPLEXITY_API_KEY"]
-        
-        with st.spinner('Analyzing historical data...'):
+          with st.spinner('Analyzing historical data...'):
             analysis_result = analyze_real_time_stock_data(data_text, api_key)
-            
             if "content" in analysis_result:
+                # Store analysis results in session state
+                update_session_with_analysis(analysis_result, data['stock_code'], data['interval'])
                 st.markdown("### Stock Analysis Results")
                 st.markdown(analysis_result["content"])
             else:
                 st.error(f"Analysis failed: {analysis_result.get('error', 'Unknown error')}")
-                
     except Exception as e:
         st.error(f"Error during analysis: {str(e)}")
         
@@ -380,3 +457,38 @@ text-align: center;
 </div>
 """
 st.markdown(footer, unsafe_allow_html=True)
+
+# Display previously stored results
+st.divider()
+
+# Function to display stored session data
+def display_stored_session_data():
+    if st.session_state["historical_data_for_analysis"] is not None:
+        data = st.session_state["historical_data_for_analysis"]
+        st.markdown(f"### Stored Historical Data for {data['stock_code']}")
+        st.markdown(f"**Interval:** {data['interval']}")
+        st.markdown(f"**Period:** {data['from_date']} to {data['to_date']}")
+        st.markdown(f"**Last Updated:** {data['timestamp']}")
+        
+        # Display the stored dataframe
+        st.dataframe(data['dataframe'])
+        
+        # Display the stored chart
+        if st.session_state["chart_fig"] is not None:
+            st.plotly_chart(st.session_state["chart_fig"], use_container_width=True)
+
+    if st.session_state["analysis_results"] is not None:
+        st.divider()
+        st.markdown("### Stored Analysis Results")
+        results = st.session_state["analysis_results"]
+        st.markdown(f"**Stock Code:** {results['stock_code']}")
+        st.markdown(f"**Analysis Time:** {results['timestamp']}")
+        st.markdown(results["content"])
+
+# Display stored session data
+display_stored_session_data()
+
+# Add clear session data button
+if st.button("Clear All Session Data"):
+    # Clear all stored session data
+    clear_session_data()
