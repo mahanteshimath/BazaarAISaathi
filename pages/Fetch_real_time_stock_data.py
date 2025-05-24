@@ -234,6 +234,22 @@ if st.button("Fetch Historical Data"):
             st.error(f"Invalid interval: {interval}. Please select one of {valid_intervals}.")
             st.stop()
 
+        # Validate and log the date range
+        try:
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+            if from_date_obj >= to_date_obj:
+                st.error("Error: 'From Date' must be earlier than 'To Date'.")
+                st.stop()
+
+            # Log the validated dates
+            st.write(f"Validated From Date: {from_date_obj}")
+            st.write(f"Validated To Date: {to_date_obj}")
+        except ValueError as e:
+            st.error(f"Error: Invalid date format. Ensure dates are in ISO 8601 format (YYYY-MM-DDTHH:mm:ss.fffZ). Details: {e}")
+            st.stop()
+
         # Fetch historical data
         response = requests.request("GET", url, headers=headers, data=payload)
         historical_data = json.loads(response.text)
