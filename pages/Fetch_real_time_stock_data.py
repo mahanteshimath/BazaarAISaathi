@@ -135,7 +135,7 @@ if st.button("Fetch Historical Data", key="fetch_historical_data_button_1"):
         api.generate_session(api_secret=api_secret, session_token=session_token)
 
         # Fetch Data using historical data API v2
-        data = api.get_historical_data_v2(
+        data = api.get_historical_data(
             interval=interval,
             from_date=from_date,
             to_date=to_date,
