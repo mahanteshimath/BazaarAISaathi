@@ -425,10 +425,10 @@ if st.button("Run RealTime stock price analysis"):
             f"Average Daily Range: {(df['high'] - df['low']).mean():.2f}\n"
             f"Volatility (Std Dev of Returns): {(df['close'].pct_change().std() * 100):.2f}%"
         )
+          # Get API key from secrets
+        api_key = st.secrets["PERPLEXITY_API_KEY"]
         
-        # Get API key from secrets
-        api_key =  st.secrets["PERPLEXITY_API_KEY"]
-          with st.spinner('Analyzing historical data...'):
+        with st.spinner('Analyzing historical data...'):
             analysis_result = analyze_real_time_stock_data(data_text, api_key)
             if "content" in analysis_result:
                 # Store analysis results in session state
@@ -477,13 +477,14 @@ def display_stored_session_data():
         if st.session_state["chart_fig"] is not None:
             st.plotly_chart(st.session_state["chart_fig"], use_container_width=True)
 
-    if st.session_state["analysis_results"] is not None:
-        st.divider()
-        st.markdown("### Stored Analysis Results")
-        results = st.session_state["analysis_results"]
-        st.markdown(f"**Stock Code:** {results['stock_code']}")
-        st.markdown(f"**Analysis Time:** {results['timestamp']}")
-        st.markdown(results["content"])
+        # Display analysis results if available
+        if st.session_state["analysis_results"] is not None:
+            st.divider()
+            st.markdown("### Stored Analysis Results")
+            results = st.session_state["analysis_results"]
+            st.markdown(f"**Stock Code:** {results['stock_code']}")
+            st.markdown(f"**Analysis Time:** {results['timestamp']}")
+            st.markdown(results["content"])
 
 # Display stored session data
 display_stored_session_data()
