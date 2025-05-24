@@ -15,7 +15,7 @@ st.title("Fetch Real-Time Stock Data")
 st.write("This allows you to fetch real-time stock data using the ICICI Direct API. Please enter your API credentials to get started.")
 
 # Helper functions for session state management
-def update_session_with_historical_data(df, stock_code, interval, from_date, to_date, fig):
+def update_session_with_historical_data(df, stock_code, interval, from_date, to_date):
     """Update session state with historical data"""
     st.session_state["historical_data_for_analysis"] = {
         "dataframe": df,
@@ -25,7 +25,6 @@ def update_session_with_historical_data(df, stock_code, interval, from_date, to_
         "to_date": to_date,
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-    st.session_state["chart_fig"] = fig
     st.session_state["last_fetched_stock"] = stock_code
 
 def update_session_with_analysis(analysis_result, stock_code, interval):
@@ -348,12 +347,11 @@ if st.button("Fetch Historical Data"):
                             x=1
                         )
                     )
+                      # Store all relevant data in session state
+                    update_session_with_historical_data(df, stock_code, interval, from_date, to_date)
                     
-                    # Store all relevant data in session state
-                    update_session_with_historical_data(df, stock_code, interval, from_date, to_date, fig)
-                    
-                    # Display the chart
-                    st.plotly_chart(fig, use_container_width=True)
+                    # Display the chart with a unique key
+                    st.plotly_chart(fig, use_container_width=True, key=f"chart_{datetime.now().timestamp()}")
                     
                 except Exception as e:
                     st.error(f"Error creating chart: {str(e)}")
@@ -428,23 +426,7 @@ if st.button("Run RealTime stock price analysis"):
     except Exception as e:
         st.error(f"Error during analysis: {str(e)}")
         
-# Footer
-footer = """<style>
-.footer {
-position: fixed;
-left: 0;
-bottom: 0;
-width: 100%;
-background-color: #2C1E5B;
-color: white;
-text-align: center;
-}
-</style>
-<div class="footer">
-<p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/ " target="_blank">MAHANTESH HIREMATH</a></p>
-</div>
-"""
-st.markdown(footer, unsafe_allow_html=True)
+
 
 # Display previously stored results
 st.divider()
@@ -460,10 +442,6 @@ def display_stored_session_data():
         
         # Display the stored dataframe
         st.dataframe(data['dataframe'])
-        
-        # Display the stored chart
-        if st.session_state["chart_fig"] is not None:
-            st.plotly_chart(st.session_state["chart_fig"], use_container_width=True)
 
         # Display analysis results if available
         if st.session_state["analysis_results"] is not None:
@@ -481,3 +459,21 @@ display_stored_session_data()
 if st.button("Clear All Session Data"):
     # Clear all stored session data
     clear_session_data()
+
+# Footer
+footer = """<style>
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: #2C1E5B;
+color: white;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/ " target="_blank">MAHANTESH HIREMATH</a></p>
+</div>
+"""
+st.markdown(footer, unsafe_allow_html=True)
