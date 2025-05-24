@@ -192,8 +192,8 @@ if st.button("Fetch Historical Data"):
         customerDetail_response = requests.request("GET", customerDetail_url, headers=customerDetail_headers, data=customerDetail_payload)
         data = json.loads(customerDetail_response.text)
 
-        # Log the raw API response for debugging
-        st.json(data)
+        # # Log the raw API response for debugging
+        # st.json(data)
 
         # Validate API response before accessing nested fields
         if data and "Success" in data and data["Success"]:
@@ -249,9 +249,9 @@ if st.button("Fetch Historical Data"):
             "Payload": json.loads(payload)
         })
 
-        # Display raw JSON response
-        st.markdown("### Raw Historical Data")
-        st.json(historical_data)
+        # # Display raw JSON response
+        # st.markdown("### Raw Historical Data")
+        # st.json(historical_data)
 
         # Process the response if successful
         if 'Success' in historical_data and isinstance(historical_data['Success'], list):
