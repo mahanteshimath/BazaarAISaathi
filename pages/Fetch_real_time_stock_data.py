@@ -251,18 +251,31 @@ if st.button("Fetch Historical Data"):
         response = requests.request("GET", url, headers=headers, data=payload)
         historical_data = json.loads(response.text)
 
-        # Convert data (API JSON response) into a table / dataframe using pandas library
-        df = pd.DataFrame(historical_data['Success'])
+        # Validate and process historical data
+        if 'Success' in historical_data and isinstance(historical_data['Success'], list):
+            df = pd.DataFrame(historical_data['Success'])
 
-        # Display historical data in a dataframe
-        st.markdown("### Historical Data")
-        st.dataframe(df)
+            # Check if 'datetime' field exists and is valid
+            if 'datetime' in df.columns:
+                try:
+                    df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
+                    df = df.dropna(subset=['datetime'])  # Drop rows with invalid datetime
+                    df.set_index('datetime', inplace=True)
 
-        # Display historical data in a chart
-        st.markdown("### Historical Data Chart")
-        df['datetime'] = pd.to_datetime(df['datetime'])
-        df.set_index('datetime', inplace=True)
-        st.line_chart(df[['open', 'high', 'low', 'close']])
+                    # Display historical data in a dataframe
+                    st.markdown("### Historical Data")
+                    st.dataframe(df)
+
+                    # Display historical data in a chart
+                    st.markdown("### Historical Data Chart")
+                    st.line_chart(df[['open', 'high', 'low', 'close']])
+                except Exception as e:
+                    st.error(f"Error processing 'datetime' field: {e}")
+            else:
+                st.error("Error: 'datetime' field is missing in the API response.")
+        else:
+            st.error("Error: Invalid API response structure.")
+
     except Exception as e:
         st.error(f"Error fetching historical data: {e}")
 
