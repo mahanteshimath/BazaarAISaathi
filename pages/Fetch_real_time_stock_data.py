@@ -349,7 +349,7 @@ if st.button("Run RealTime stock price analysis"):
         )
         
         # Get API key from secrets
-        api_key = st.secrets["perplexity_api_key"]
+        api_key =  st.secrets["PERPLEXITY_API_KEY"]
         
         with st.spinner('Analyzing historical data...'):
             analysis_result = analyze_real_time_stock_data(data_text, api_key)
