@@ -225,7 +225,20 @@ if st.button("Fetch Historical Data"):
 
         customerDetail_response = requests.request("GET", customerDetail_url, headers=customerDetail_headers, data=customerDetail_payload)
         data = json.loads(customerDetail_response.text)
-        session_token = data["Success"]["session_token"]
+
+        # Log the raw API response for debugging
+        st.write("Raw API Response:", json.dumps(data, indent=4))
+
+        # Validate API response before accessing nested fields
+        if data and "Success" in data and data["Success"]:
+            session_token = data["Success"].get("session_token")
+            if not session_token:
+                st.error("Error: 'session_token' is missing in the API response.")
+                st.stop()
+        else:
+            error_message = data.get("Error", "Unknown error") if isinstance(data, dict) else "Invalid response format"
+            st.error(f"Error: Invalid API response structure or 'Success' field is missing. Details: {error_message}")
+            st.stop()
 
         # Define historical data API details
         url = "https://api.icicidirect.com/breezeapi/api/v1/historicalcharts"
