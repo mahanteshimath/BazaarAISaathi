@@ -42,8 +42,12 @@ def analyze_real_time_stock_data(stock_data, api_key):
         if 'choices' in result and len(result['choices']) > 0:
             message = result['choices'][0]['message']
             content = message.get('content', '')
-            return {"content": content}
+            citations = result.get('citations', [])
 
+            return {
+                'content': content,
+                'citations': citations
+            }
         return result
     except requests.RequestException as e:
         return {"error": f"API request failed: {str(e)}"}

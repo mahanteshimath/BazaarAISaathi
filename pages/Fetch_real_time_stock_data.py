@@ -434,7 +434,6 @@ if st.button("Run RealTime stock price analysis"):
         st.error(f"Error during analysis: {str(e)}")
 # Display previously stored results
 st.divider()
-st.markdown("### Display previously stored results")
 
 # Function to create and display chart
 def display_chart(df, stock_code):
