@@ -44,11 +44,14 @@ def analyze_real_time_stock_data(stock_data, api_key):
             content = message.get('content', '')
             citations = result.get('citations', [])
 
-            return {
-                'content': content,
-                'citations': citations
-            }
-        return result
+            # Format content as Markdown
+            markdown_response = f"\n\n{content}\n\n"
+            if citations:
+                markdown_response += "\n### Sources\n"
+                for citation in citations:
+                    markdown_response += f"- {citation}\n"
+
+            return markdown_response
     except requests.RequestException as e:
         return {"error": f"API request failed: {str(e)}"}
     except json.JSONDecodeError as e:
