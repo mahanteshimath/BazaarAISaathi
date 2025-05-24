@@ -116,41 +116,6 @@ def display_customer_details():
             currency=customer_details['Success']['segments_allowed']['Currency']
         ))
 
-
-# Ensure unique labels or keys for all buttons
-if st.button("Fetch Historical Data", key="fetch_historical_data_button_1"):
-    try:
-        # Initialize SDK
-        api = BreezeConnect(api_key=api_key)
-
-        # Generate Session
-        api.generate_session(api_secret=api_secret, session_token=session_token)
-
-        # Fetch Data using historical data API v2
-        data = api.get_historical_data(
-            interval=interval,
-            from_date=from_date,
-            to_date=to_date,
-            stock_code=stock_code,
-            exchange_code="NSE",
-            product_type="cash"
-        )
-        st.write(data)
-        # Convert data (API JSON response) into a table / dataframe using pandas library
-        df = pd.DataFrame(data['Success'])
-
-        # Display historical data in a dataframe
-        st.markdown("### Historical Data")
-        st.dataframe(df)
-
-        # Display historical data in a chart
-        st.markdown("### Historical Data Chart")
-        df['datetime'] = pd.to_datetime(df['datetime'])
-        df.set_index('datetime', inplace=True)
-        st.line_chart(df[['open', 'high', 'low', 'close']])
-    except Exception as e:
-        st.error(f"Error fetching historical data: {e}")
-
 # Buttons to trigger actions
 if st.button("Connect"):
     connect_and_fetch()
