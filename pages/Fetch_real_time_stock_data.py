@@ -249,7 +249,7 @@ if st.button("Fetch Historical Data"):
             "stock_code": stock_code,
             "exchange_code": "NSE",
             "product_type": "Cash"
-        }, separators=(',', ':'))
+        })
 
         checksum = hashlib.sha256((time_stamp + payload + secret_key).encode("utf-8")).hexdigest()
         headers = {
