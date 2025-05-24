@@ -277,7 +277,8 @@ if st.button("Fetch Historical Data"):
 
 st.divider()
 
-if st.button("Run RealTime stock price analysis"):    try:
+if st.button("Run RealTime stock price analysis"):
+    try:
         from utils.RealTime_stock_price_analysis import analyze_real_time_stock_data
         
         if 'historical_data_for_analysis' not in st.session_state:
@@ -288,54 +289,30 @@ if st.button("Run RealTime stock price analysis"):    try:
         df = data['dataframe']
         
         # Format the data for analysis
-        data_text = f"""
-        Stock Code: {data['stock_code']}
-        Interval: {data['interval']}
-        Time Period: {data['from_date']} to {data['to_date']}
-        
-        Historical Price Data:
-        Open Price Range: {df['open'].min()} - {df['open'].max()}
-        High Price Range: {df['high'].min()} - {df['high'].max()}
-        Low Price Range: {df['low'].min()} - {df['low'].max()}
-        Close Price Range: {df['close'].min()} - {df['close'].max()}
-        Latest Close Price: {df['close'][-1]}
-        
-        Volume Statistics:
-        Average Volume: {df['volume'].mean():.2f}
-        Max Volume: {df['volume'].max()}
-        
-        Price Movement:
-        Price Change: {df['close'][-1] - df['close'][0]:.2f}
-        Percentage Change: {((df['close'][-1] - df['close'][0]) / df['close'][0] * 100):.2f}%
-        """
+        data_text = (
+            f"Stock Code: {data['stock_code']}\n"
+            f"Interval: {data['interval']}\n"
+            f"Time Period: {data['from_date']} to {data['to_date']}\n\n"
+            f"Historical Price Data:\n"
+            f"Open Price Range: {df['open'].min()} - {df['open'].max()}\n"
+            f"High Price Range: {df['high'].min()} - {df['high'].max()}\n"
+            f"Low Price Range: {df['low'].min()} - {df['low'].max()}\n"
+            f"Close Price Range: {df['close'].min()} - {df['close'].max()}\n"
+            f"Latest Close Price: {df['close'][-1]}\n\n"
+            f"Volume Statistics:\n"
+            f"Average Volume: {df['volume'].mean():.2f}\n"
+            f"Max Volume: {df['volume'].max()}\n\n"
+            f"Price Movement:\n"
+            f"Price Change: {df['close'][-1] - df['close'][0]:.2f}\n"
+            f"Percentage Change: {((df['close'][-1] - df['close'][0]) / df['close'][0] * 100):.2f}%"
+        )
         
         # Get API key from secrets
         api_key = st.secrets["perplexity_api_key"]
         
-        with st.spinner('Analyzing historical data...'):            # Format the data for analysis
-            data_text = f"""
-            Stock Code: {data['stock_code']}
-            Interval: {data['interval']}
-            Time Period: {data['from_date']} to {data['to_date']}
-            
-            Historical Price Data:
-            Open Price Range: {df['open'].min()} - {df['open'].max()}
-            High Price Range: {df['high'].min()} - {df['high'].max()}
-            Low Price Range: {df['low'].min()} - {df['low'].max()}
-            Close Price Range: {df['close'].min()} - {df['close'].max()}
-            Latest Close Price: {df['close'][-1]}
-            
-            Volume Statistics:
-            Average Volume: {df['volume'].mean():.2f}
-            Max Volume: {df['volume'].max()}
-            
-            Price Movement:
-            Price Change: {df['close'][-1] - df['close'][0]:.2f}
-            Percentage Change: {((df['close'][-1] - df['close'][0]) / df['close'][0] * 100):.2f}%
-            """
-            
+        with st.spinner('Analyzing historical data...'):
             analysis_result = analyze_real_time_stock_data(data_text, api_key)
-
+            
             if "content" in analysis_result:
                 st.markdown("### Stock Analysis Results")
                 st.markdown(analysis_result["content"])
