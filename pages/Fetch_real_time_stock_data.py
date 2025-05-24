@@ -75,23 +75,11 @@ session_vars = [
     "last_fetched_stock"
 ]
 
+# Initialize all session variables to None if they don't exist
 for var in session_vars:
     if var not in st.session_state:
         st.session_state[var] = None
 
-# Cache session and fetched data
-if "session_cached" not in st.session_state:
-    st.session_state["session_cached"] = None
-if "customer_details" not in st.session_state:
-    st.session_state["customer_details"] = None
-if "historical_data_for_analysis" not in st.session_state:
-    st.session_state["historical_data_for_analysis"] = None
-if "analysis_results" not in st.session_state:
-    st.session_state["analysis_results"] = None
-if "chart_fig" not in st.session_state:
-    st.session_state["chart_fig"] = None
-if "last_fetched_stock" not in st.session_state:
-    st.session_state["last_fetched_stock"] = None
 
 # Function to connect and fetch data
 def connect_and_fetch():
@@ -301,9 +289,10 @@ if st.button("Fetch Historical Data"):
                 df = df.set_index('datetime')
 
                 # Display the data
-                st.markdown("### Historical Data Table  for " + stock_code)
-                st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")                st.dataframe(df)
-                  # Create candlestick chart using plotly
+                st.markdown("### Historical Data Table  for " + stock_code)                st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")
+                st.dataframe(df)
+                
+                # Create candlestick chart using plotly
                 st.markdown("### Historical Data Chart")
                 try:
                     # Convert numeric data
@@ -423,9 +412,9 @@ if st.button("Run RealTime stock price analysis"):
             f"Trading Summary:\n"
             f"Number of Trades: {len(df)}\n"
             f"Average Daily Range: {(df['high'] - df['low']).mean():.2f}\n"
-            f"Volatility (Std Dev of Returns): {(df['close'].pct_change().std() * 100):.2f}%"
-        )
-          # Get API key from secrets
+            f"Volatility (Std Dev of Returns): {(df['close'].pct_change().std() * 100):.2f}%"        )
+        
+        # Get API key from secrets
         api_key = st.secrets["PERPLEXITY_API_KEY"]
         
         with st.spinner('Analyzing historical data...'):
