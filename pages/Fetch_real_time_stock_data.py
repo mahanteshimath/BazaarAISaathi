@@ -32,7 +32,7 @@ else:
 
 # Display session key URL
 st.write("Obtain your session key from the following URL:")
-st.code("https://api.icicidirect.com/apiuser/login?api_key=" + urllib.parse.quote_plus("your_api_key"))
+st.code("https://api.icicidirect.com/apiuser/home")
 
 # Cache session and fetched data
 if "session_cached" not in st.session_state:
@@ -264,6 +264,7 @@ if st.button("Fetch Historical Data"):
 
     except Exception as e:
         st.error(f"Error fetching historical data: {str(e)}")
+st.divider()
 
 # Footer
 footer = """<style>
