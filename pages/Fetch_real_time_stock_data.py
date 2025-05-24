@@ -324,14 +324,13 @@ if st.button("Fetch Historical Data"):
                         yaxis='y2',
                         opacity=0.7
                     ))
-                    
-                    # Update layout for better visualization
+                      # Update layout for better visualization
                     fig.update_layout(
                         title=f'{stock_code} Stock Price',
                         yaxis_title='Price',
                         yaxis2=dict(
                             title='Volume',
-                            titlefont=dict(color='#929292'),
+                            title_font=dict(color='#929292'),
                             tickfont=dict(color='#929292'),
                             overlaying='y',
                             side='right',
