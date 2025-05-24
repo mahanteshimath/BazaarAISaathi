@@ -3,6 +3,10 @@ import streamlit as st
 from breeze_connect import BreezeConnect
 import urllib
 import pandas as pd
+import requests
+import json
+import hashlib
+from datetime import datetime, timezone
 
 # Title and description
 st.title("Fetch Real-Time Stock Data")
@@ -112,18 +116,6 @@ def display_customer_details():
             currency=customer_details['Success']['segments_allowed']['Currency']
         ))
 
-# Ensure unique keys for all Streamlit widgets
-# Retrieve user inputs for interval, from_date, to_date, and stock_code
-interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"], key="interval_unique")
-from_date_date = st.date_input("From Date:", key="from_date_date_unique")
-from_date_time = st.time_input("From Time:", key="from_date_time_unique")
-to_date_date = st.date_input("To Date:", key="to_date_date_unique")
-to_date_time = st.time_input("To Time:", key="to_date_time_unique")
-stock_code = st.text_input("Stock Code:", "RELIND", key="stock_code_unique")
-
-# Convert selected date and time to ISO 8601 format
-from_date = f"{from_date_date}T{from_date_time}:00.000Z"
-to_date = f"{to_date_date}T{to_date_time}:00.000Z"
 
 # Ensure unique labels or keys for all buttons
 if st.button("Fetch Historical Data", key="fetch_historical_data_button_1"):
@@ -214,24 +206,53 @@ breeze.get_historical_data(
 """)
 if st.button("Fetch Historical Data"):
     try:
-        # Initialize SDK
-        api = BreezeConnect(api_key=api_key)
+        # Define API details
+        customerDetail_url = "https://api.icicidirect.com/breezeapi/api/v1/customerdetails"
+        secret_key = api_secret
+        appkey = api_key
+        session_key = session_token
+        time_stamp = datetime.now(timezone.utc).isoformat()[:19] + '.000Z'
 
-        # Generate Session
-        api.generate_session(api_secret=api_secret, session_token=session_token)
+        # Fetch session token
+        customerDetail_payload = json.dumps({
+            "SessionToken": session_key,
+            "AppKey": appkey
+        })
 
-        # Fetch Data using historical data API v2
-        data = api.get_historical_data_v2(
-            interval=interval,
-            from_date=from_date,
-            to_date=to_date,
-            stock_code=stock_code,
-            exchange_code="NSE",
-            product_type="cash"
-        )
+        customerDetail_headers = {
+            'Content-Type': 'application/json',
+        }
+
+        customerDetail_response = requests.request("GET", customerDetail_url, headers=customerDetail_headers, data=customerDetail_payload)
+        data = json.loads(customerDetail_response.text)
+        session_token = data["Success"]["session_token"]
+
+        # Define historical data API details
+        url = "https://api.icicidirect.com/breezeapi/api/v1/historicalcharts"
+        payload = json.dumps({
+            "interval": interval,
+            "from_date": from_date,
+            "to_date": to_date,
+            "stock_code": stock_code,
+            "exchange_code": "NSE",
+            "product_type": "Cash"
+        }, separators=(',', ':'))
+
+        checksum = hashlib.sha256((time_stamp + payload + secret_key).encode("utf-8")).hexdigest()
+        headers = {
+            'Content-Type': 'application/json',
+            'X-Checksum': 'token ' + checksum,
+            'X-Timestamp': time_stamp,
+            'X-AppKey': appkey,
+            'X-SessionToken': session_token
+        }
+
+        # Fetch historical data
+        response = requests.request("GET", url, headers=headers, data=payload)
+        historical_data = json.loads(response.text)
 
         # Convert data (API JSON response) into a table / dataframe using pandas library
-        df = pd.DataFrame(data['Success'])
+        df = pd.DataFrame(historical_data['Success'])
 
         # Display historical data in a dataframe
         st.markdown("### Historical Data")
