@@ -283,13 +283,13 @@ if st.button("Fetch Historical Data"):
         if 'Success' in historical_data and isinstance(historical_data['Success'], list):
             df = pd.DataFrame(historical_data['Success'])
             
-            if len(df) > 0:
-                # Convert and validate datetime
+            if len(df) > 0:                # Convert and validate datetime
                 df['datetime'] = pd.to_datetime(df['datetime'])
                 df = df.set_index('datetime')
 
                 # Display the data
-                st.markdown("### Historical Data Table  for " + stock_code)                st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")
+                st.markdown(f"### Historical Data Table for {stock_code}")
+                st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")
                 st.dataframe(df)
                 
                 # Create candlestick chart using plotly
