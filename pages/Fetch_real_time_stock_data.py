@@ -424,13 +424,13 @@ if st.button("Run RealTime stock price analysis"):
         
         with st.spinner('Analyzing historical data...'):
             analysis_result = analyze_real_time_stock_data(data_text, api_key)
-            # if "content" in analysis_result:
-            #     # Store analysis results in session state
-            #     update_session_with_analysis(analysis_result, data['stock_code'], data['interval'])
-            #     st.markdown("### Stock Analysis Results")
-            #     st.markdown(analysis_result["content"])
-            # else:
-            #     st.error(f"Analysis failed: {analysis_result.get('error', 'Unknown error')}")
+            if "content" in analysis_result:
+                # Store analysis results in session state
+                update_session_with_analysis(analysis_result, data['stock_code'], data['interval'])
+                st.markdown("### Stock Analysis Results")
+                st.markdown(analysis_result["content"])
+            else:
+                st.error(f"Analysis failed: {analysis_result.get('error', 'Unknown error')}")
     except Exception as e:
         st.error(f"Error during analysis: {str(e)}")
         
