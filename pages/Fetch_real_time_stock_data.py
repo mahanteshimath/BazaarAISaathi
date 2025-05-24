@@ -172,7 +172,7 @@ col3, col4 = st.columns(2)
 
 # Input fields for API credentials in the first column
 with col3:
-    interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"], key="interval_fetch")
+    interval = st.selectbox("Select Interval:",  ["minute", "5minute", "30minute", "day"], key="interval_fetch")
     # Updated input fields for date and time selection
     from_date_date = st.date_input("From Date:", key="from_date_date_fetch")
     from_date_time = st.time_input("From Time:", key="from_date_time_fetch")
