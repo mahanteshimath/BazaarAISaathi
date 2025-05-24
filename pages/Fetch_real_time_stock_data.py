@@ -156,8 +156,8 @@ with col4:
 from_date = datetime.combine(from_date_date, from_date_time).replace(microsecond=0).astimezone(timezone.utc).isoformat()[:19] + '.000Z'
 to_date = datetime.combine(to_date_date, to_date_time).replace(microsecond=0).astimezone(timezone.utc).isoformat()[:19] + '.000Z'
 
-st.write(f"From Date: {from_date}")
-st.write(f"To Date: {to_date}")
+# st.write(f"From Date: {from_date}")
+# st.write(f"To Date: {to_date}")
 
 st.markdown(f"""
 breeze.get_historical_data(
@@ -263,7 +263,8 @@ if st.button("Fetch Historical Data"):
                 df = df.set_index('datetime')
 
                 # Display the data
-                st.markdown("### Historical Data Table")
+                st.markdown("### Historical Data Table  for " + stock_code)
+                st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")
                 st.dataframe(df)
 
                 st.markdown("### Historical Data Chart")
