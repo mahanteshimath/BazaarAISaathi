@@ -152,9 +152,10 @@ with col4:
     
 
 
-# Convert selected date and time to ISO 8601 format
-from_date = f"{from_date_date}T{from_date_time}:00.000Z"
-to_date = f"{to_date_date}T{to_date_time}:00.000Z"
+# Convert selected date and time to ISO 8601 format with correct precision
+from_date = datetime.combine(from_date_date, from_date_time).replace(microsecond=0).astimezone(timezone.utc).isoformat()[:19] + '.000Z'
+to_date = datetime.combine(to_date_date, to_date_time).replace(microsecond=0).astimezone(timezone.utc).isoformat()[:19] + '.000Z'
+
 st.write(f"From Date: {from_date}")
 st.write(f"To Date: {to_date}")
 
@@ -167,8 +168,8 @@ breeze.get_historical_data(
     exchange_code="NSE",
     product_type="cash"
 )
-
 """)
+
 if st.button("Fetch Historical Data"):
     try:
         # Define API details
@@ -192,7 +193,7 @@ if st.button("Fetch Historical Data"):
         data = json.loads(customerDetail_response.text)
 
         # Log the raw API response for debugging
-        st.json(data)  # Changed to st.json for better JSON display
+        st.json(data)
 
         # Validate API response before accessing nested fields
         if data and "Success" in data and data["Success"]:
@@ -208,6 +209,7 @@ if st.button("Fetch Historical Data"):
         # Define historical data API details
         url = "https://api.icicidirect.com/breezeapi/api/v1/historicalcharts"
         
+        # Format payload exactly like the working example
         payload = json.dumps({
             "interval": interval,
             "from_date": from_date,
@@ -217,6 +219,7 @@ if st.button("Fetch Historical Data"):
             "product_type": "Cash"
         }, separators=(',', ':'))
 
+        # Generate checksum exactly like the working example
         checksum_string = time_stamp + payload + secret_key
         checksum = hashlib.sha256(checksum_string.encode("utf-8")).hexdigest()
 
@@ -234,31 +237,11 @@ if st.button("Fetch Historical Data"):
             st.error(f"Invalid interval: {interval}. Please select one of {valid_intervals}.")
             st.stop()
 
-        # Validate and log the date range
-        try:
-            from_date_obj = datetime.strptime(from_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-            to_date_obj = datetime.strptime(to_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-
-            if from_date_obj >= to_date_obj:
-                st.error("Error: 'From Date' must be earlier than 'To Date'.")
-                st.stop()
-
-            # Log the validated dates
-            st.write(f"Validated From Date: {from_date_obj}")
-            st.write(f"Validated To Date: {to_date_obj}")
-        except ValueError as e:
-            st.error(f"Error: Invalid date format. Ensure dates are in ISO 8601 format (YYYY-MM-DDTHH:mm:ss.fffZ). Details: {e}")
-            st.stop()
-
         # Fetch historical data
         response = requests.request("GET", url, headers=headers, data=payload)
         historical_data = json.loads(response.text)
 
-        # Display raw JSON response
-        st.markdown("### Raw Historical Data")
-        st.json(historical_data)  # Changed to st.json for better JSON display
-
-        # Show request details for debugging
+        # Display request details for debugging
         st.markdown("### Request Details")
         st.json({
             "URL": url,
@@ -266,8 +249,33 @@ if st.button("Fetch Historical Data"):
             "Payload": json.loads(payload)
         })
 
+        # Display raw JSON response
+        st.markdown("### Raw Historical Data")
+        st.json(historical_data)
+
+        # Process the response if successful
+        if 'Success' in historical_data and isinstance(historical_data['Success'], list):
+            df = pd.DataFrame(historical_data['Success'])
+            
+            if len(df) > 0:
+                # Convert and validate datetime
+                df['datetime'] = pd.to_datetime(df['datetime'])
+                df = df.set_index('datetime')
+
+                # Display the data
+                st.markdown("### Historical Data Table")
+                st.dataframe(df)
+
+                st.markdown("### Historical Data Chart")
+                st.line_chart(df[['open', 'high', 'low', 'close']])
+            else:
+                st.warning("No data available for the selected date range.")
+        else:
+            error_msg = historical_data.get('Error', 'Unknown error')
+            st.error(f"Error in API response: {error_msg}")
+
     except Exception as e:
-        st.error(f"Error fetching historical data: {e}")
+        st.error(f"Error fetching historical data: {str(e)}")
 
 # Footer
 footer = """<style>
