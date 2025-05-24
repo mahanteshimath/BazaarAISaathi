@@ -7,6 +7,7 @@ import requests
 import json
 import hashlib
 from datetime import datetime, timezone
+from utils.RealTime_stock_price_analysis import analyze_real_time_stock_data
 
 # Title and description
 st.title("Fetch Real-Time Stock Data")
@@ -148,7 +149,7 @@ with col3:
 with col4:
     to_date_date = st.date_input("To Date:", key="to_date_date_fetch")
     to_date_time = st.time_input("To Time:", key="to_date_time_fetch")
-    stock_code = st.text_input("Stock Code:", "RELIND", key="historical_stock_code_fetch")
+    stock_code = st.text_input("Stock Code:", "ITC", key="historical_stock_code_fetch")
     
 
 
@@ -254,6 +255,15 @@ if st.button("Fetch Historical Data"):
                 st.markdown(f"**Interval:** {interval}, **From Date:** {from_date}, **To Date:** {to_date}")
                 st.dataframe(df)
 
+                # Store the data in session state for analysis
+                st.session_state['historical_data_for_analysis'] = {
+                    'dataframe': df,
+                    'stock_code': stock_code,
+                    'interval': interval,
+                    'from_date': from_date,
+                    'to_date': to_date
+                }
+
                 st.markdown("### Historical Data Chart")
                 st.line_chart(df[['open', 'high', 'low', 'close']])
             else:
@@ -264,8 +274,57 @@ if st.button("Fetch Historical Data"):
 
     except Exception as e:
         st.error(f"Error fetching historical data: {str(e)}")
+
 st.divider()
 
+if st.button("Run RealTime stock price analysis"):
+    try:
+        from utils.RealTime_stock_price_analysis import analyze_tip_or_advice
+        
+        if 'historical_data_for_analysis' not in st.session_state:
+            st.error("Please fetch historical data first before running the analysis.")
+            st.stop()
+            
+        data = st.session_state['historical_data_for_analysis']
+        df = data['dataframe']
+        
+        # Format the data for analysis
+        data_text = f"""
+        Stock Code: {data['stock_code']}
+        Interval: {data['interval']}
+        Time Period: {data['from_date']} to {data['to_date']}
+        
+        Historical Price Data:
+        Open Price Range: {df['open'].min()} - {df['open'].max()}
+        High Price Range: {df['high'].min()} - {df['high'].max()}
+        Low Price Range: {df['low'].min()} - {df['low'].max()}
+        Close Price Range: {df['close'].min()} - {df['close'].max()}
+        Latest Close Price: {df['close'][-1]}
+        
+        Volume Statistics:
+        Average Volume: {df['volume'].mean():.2f}
+        Max Volume: {df['volume'].max()}
+        
+        Price Movement:
+        Price Change: {df['close'][-1] - df['close'][0]:.2f}
+        Percentage Change: {((df['close'][-1] - df['close'][0]) / df['close'][0] * 100):.2f}%
+        """
+        
+        # Get API key from secrets
+        api_key = st.secrets["perplexity_api_key"]
+        
+        with st.spinner('Analyzing historical data...'):
+            analysis_result = analyze_real_time_stock_data(data, api_key)
+
+            if "content" in analysis_result:
+                st.markdown("### Stock Analysis Results")
+                st.markdown(analysis_result["content"])
+            else:
+                st.error(f"Analysis failed: {analysis_result.get('error', 'Unknown error')}")
+                
+    except Exception as e:
+        st.error(f"Error during analysis: {str(e)}")
+        
 # Footer
 footer = """<style>
 .footer {
