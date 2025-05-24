@@ -70,7 +70,7 @@ session_vars = [
     "customer_details", 
     "historical_data_for_analysis",
     "analysis_results",
-    "chart_fig",
+    "chart_data",
     "last_fetched_stock"
 ]
 
@@ -346,12 +346,20 @@ if st.button("Fetch Historical Data"):
                             xanchor="right",
                             x=1
                         )
-                    )
-                      # Store all relevant data in session state
+                    )                    # Store figure data in session state
+                    st.session_state["chart_data"] = {
+                        "df": df,
+                        "stock_code": stock_code,
+                        "interval": interval,
+                        "from_date": from_date,
+                        "to_date": to_date
+                    }
+                    
+                    # Store all relevant data in session state
                     update_session_with_historical_data(df, stock_code, interval, from_date, to_date)
                     
-                    # Display the chart with a unique key
-                    st.plotly_chart(fig, use_container_width=True, key=f"chart_{datetime.now().timestamp()}")
+                    # Display the chart
+                    st.plotly_chart(fig, use_container_width=True, key="main_chart")
                     
                 except Exception as e:
                     st.error(f"Error creating chart: {str(e)}")
@@ -431,6 +439,59 @@ if st.button("Run RealTime stock price analysis"):
 # Display previously stored results
 st.divider()
 
+# Function to create and display chart
+def display_chart(df, stock_code):
+    fig = go.Figure()
+    
+    # Add candlestick trace
+    fig.add_trace(go.Candlestick(
+        x=df.index,
+        open=df['open'],
+        high=df['high'],
+        low=df['low'],
+        close=df['close'],
+        name='OHLC',
+        increasing_line_color='#26a69a',
+        decreasing_line_color='#ef5350'
+    ))
+    
+    # Add volume bars
+    colors = ['#26a69a' if close >= open else '#ef5350' for close, open in zip(df['close'], df['open'])]
+    fig.add_trace(go.Bar(
+        x=df.index,
+        y=df['volume'],
+        name='Volume',
+        marker_color=colors,
+        yaxis='y2',
+        opacity=0.7
+    ))
+    
+    # Update layout
+    fig.update_layout(
+        title=f'{stock_code} Stock Price',
+        yaxis_title='Price',
+        yaxis2=dict(
+            title='Volume',
+            title_font=dict(color='#929292'),
+            tickfont=dict(color='#929292'),
+            overlaying='y',
+            side='right',
+            showgrid=False
+        ),
+        xaxis_rangeslider_visible=False,
+        height=600,
+        template='plotly_dark',
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+    return fig
+
 # Function to display stored session data
 def display_stored_session_data():
     if st.session_state["historical_data_for_analysis"] is not None:
@@ -442,6 +503,13 @@ def display_stored_session_data():
         
         # Display the stored dataframe
         st.dataframe(data['dataframe'])
+        
+        # Display chart if data exists
+        if st.session_state.get("chart_data") is not None:
+            st.markdown("### Historical Data Chart")
+            chart_data = st.session_state["chart_data"]
+            fig = display_chart(chart_data["df"], chart_data["stock_code"])
+            st.plotly_chart(fig, use_container_width=True, key="persistent_chart")
 
         # Display analysis results if available
         if st.session_state["analysis_results"] is not None:
