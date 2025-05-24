@@ -242,6 +242,8 @@ if st.button("Fetch Historical Data"):
 
         # Define historical data API details
         url = "https://api.icicidirect.com/breezeapi/api/v1/historicalcharts"
+        
+        # Ensure proper formatting of payload and timestamp for checksum generation
         payload = json.dumps({
             "interval": interval,
             "from_date": from_date,
@@ -249,9 +251,12 @@ if st.button("Fetch Historical Data"):
             "stock_code": stock_code,
             "exchange_code": "NSE",
             "product_type": "Cash"
-        })
+        }, separators=(',', ':'))  # Compact JSON format
 
-        checksum = hashlib.sha256((time_stamp + payload + secret_key).encode("utf-8")).hexdigest()
+        # Generate checksum with correct concatenation order
+        checksum_string = time_stamp + payload + secret_key
+        checksum = hashlib.sha256(checksum_string.encode("utf-8")).hexdigest()
+
         headers = {
             'Content-Type': 'application/json',
             'X-Checksum': 'token ' + checksum,
