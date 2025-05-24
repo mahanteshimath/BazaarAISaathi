@@ -314,23 +314,38 @@ if st.button("Run RealTime stock price analysis"):
         data = st.session_state['historical_data_for_analysis']
         df = data['dataframe']
         
+        # Convert string values to float
+        numeric_columns = ['open', 'high', 'low', 'close', 'volume']
+        for col in numeric_columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+        
+        # Calculate statistics
+        latest_close = float(df['close'].iloc[-1])
+        first_close = float(df['close'].iloc[0])
+        price_change = latest_close - first_close
+        percent_change = (price_change / first_close * 100) if first_close != 0 else 0
+        
         # Format the data for analysis
         data_text = (
             f"Stock Code: {data['stock_code']}\n"
             f"Interval: {data['interval']}\n"
             f"Time Period: {data['from_date']} to {data['to_date']}\n\n"
             f"Historical Price Data:\n"
-            f"Open Price Range: {df['open'].min()} - {df['open'].max()}\n"
-            f"High Price Range: {df['high'].min()} - {df['high'].max()}\n"
-            f"Low Price Range: {df['low'].min()} - {df['low'].max()}\n"
-            f"Close Price Range: {df['close'].min()} - {df['close'].max()}\n"
-            f"Latest Close Price: {df['close'][-1]}\n\n"
+            f"Open Price Range: {df['open'].min():.2f} - {df['open'].max():.2f}\n"
+            f"High Price Range: {df['high'].min():.2f} - {df['high'].max():.2f}\n"
+            f"Low Price Range: {df['low'].min():.2f} - {df['low'].max():.2f}\n"
+            f"Close Price Range: {df['close'].min():.2f} - {df['close'].max():.2f}\n"
+            f"Latest Close Price: {latest_close:.2f}\n\n"
             f"Volume Statistics:\n"
             f"Average Volume: {df['volume'].mean():.2f}\n"
-            f"Max Volume: {df['volume'].max()}\n\n"
+            f"Max Volume: {df['volume'].max():.0f}\n\n"
             f"Price Movement:\n"
-            f"Price Change: {df['close'][-1] - df['close'][0]:.2f}\n"
-            f"Percentage Change: {((df['close'][-1] - df['close'][0]) / df['close'][0] * 100):.2f}%"
+            f"Price Change: {price_change:.2f}\n"
+            f"Percentage Change: {percent_change:.2f}%\n\n"
+            f"Trading Summary:\n"
+            f"Number of Trades: {len(df)}\n"
+            f"Average Daily Range: {(df['high'] - df['low']).mean():.2f}\n"
+            f"Volatility (Std Dev of Returns): {(df['close'].pct_change().std() * 100):.2f}%"
         )
         
         # Get API key from secrets
