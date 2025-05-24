@@ -143,7 +143,7 @@ if st.button("Fetch Historical Data", key="fetch_historical_data_button_1"):
             exchange_code="NSE",
             product_type="cash"
         )
-
+        st.write(data)
         # Convert data (API JSON response) into a table / dataframe using pandas library
         df = pd.DataFrame(data['Success'])
 
