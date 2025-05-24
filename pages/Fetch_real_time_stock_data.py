@@ -156,19 +156,6 @@ with col4:
 from_date = datetime.combine(from_date_date, from_date_time).replace(microsecond=0).astimezone(timezone.utc).isoformat()[:19] + '.000Z'
 to_date = datetime.combine(to_date_date, to_date_time).replace(microsecond=0).astimezone(timezone.utc).isoformat()[:19] + '.000Z'
 
-# st.write(f"From Date: {from_date}")
-# st.write(f"To Date: {to_date}")
-
-st.markdown(f"""
-breeze.get_historical_data(
-    interval="{interval}",
-    from_date="{from_date}",
-    to_date="{to_date}",
-    stock_code="{stock_code}",
-    exchange_code="NSE",
-    product_type="cash"
-)
-""")
 
 if st.button("Fetch Historical Data"):
     try:
