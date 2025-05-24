@@ -125,7 +125,8 @@ stock_code = st.text_input("Stock Code:", "RELIND", key="stock_code_unique")
 from_date = f"{from_date_date}T{from_date_time}:00.000Z"
 to_date = f"{to_date_date}T{to_date_time}:00.000Z"
 
-if st.button("Fetch Historical Data"):
+# Ensure unique labels or keys for all buttons
+if st.button("Fetch Historical Data", key="fetch_historical_data_button_1"):
     try:
         # Initialize SDK
         api = BreezeConnect(api_key=api_key)
