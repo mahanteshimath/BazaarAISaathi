@@ -112,14 +112,14 @@ def display_customer_details():
             currency=customer_details['Success']['segments_allowed']['Currency']
         ))
 
-# Ensure variables are explicitly defined before using them
+# Ensure unique keys for all Streamlit widgets
 # Retrieve user inputs for interval, from_date, to_date, and stock_code
-interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"], key="interval")
-from_date_date = st.date_input("From Date:", key="from_date_date")
-from_date_time = st.time_input("From Time:", key="from_date_time")
-to_date_date = st.date_input("To Date:", key="to_date_date")
-to_date_time = st.time_input("To Time:", key="to_date_time")
-stock_code = st.text_input("Stock Code:", "RELIND", key="stock_code")
+interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"], key="interval_unique")
+from_date_date = st.date_input("From Date:", key="from_date_date_unique")
+from_date_time = st.time_input("From Time:", key="from_date_time_unique")
+to_date_date = st.date_input("To Date:", key="to_date_date_unique")
+to_date_time = st.time_input("To Time:", key="to_date_time_unique")
+stock_code = st.text_input("Stock Code:", "RELIND", key="stock_code_unique")
 
 # Convert selected date and time to ISO 8601 format
 from_date = f"{from_date_date}T{from_date_time}:00.000Z"
@@ -179,19 +179,18 @@ col3, col4 = st.columns(2)
 
 # Input fields for API credentials in the first column
 with col3:
-    interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"])
-
+    interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"], key="interval_fetch")
     # Updated input fields for date and time selection
-    from_date_date = st.date_input("From Date:", key="from_date_date")
-    from_date_time = st.time_input("From Time:", key="from_date_time")
+    from_date_date = st.date_input("From Date:", key="from_date_date_fetch")
+    from_date_time = st.time_input("From Time:", key="from_date_time_fetch")
     
 
 
 # Input fields for session token and historical data parameters in the second column
 with col4:
-    to_date_date = st.date_input("To Date:", key="to_date_date")
-    to_date_time = st.time_input("To Time:", key="to_date_time")
-    stock_code = st.text_input("Stock Code:", "RELIND", key="historical_stock_code")
+    to_date_date = st.date_input("To Date:", key="to_date_date_fetch")
+    to_date_time = st.time_input("To Time:", key="to_date_time_fetch")
+    stock_code = st.text_input("Stock Code:", "RELIND", key="historical_stock_code_fetch")
     
 
 
