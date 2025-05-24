@@ -423,7 +423,8 @@ if st.button("Run RealTime stock price analysis"):
         api_key = st.secrets["PERPLEXITY_API_KEY"]
         
         with st.spinner('Analyzing historical data...'):
-            analysis_result = analyze_real_time_stock_data(data_text, api_key)            if "content" in analysis_result:
+            analysis_result = analyze_real_time_stock_data(data_text, api_key)
+            if "content" in analysis_result:
                 # Store analysis results in session state
                 update_session_with_analysis(analysis_result, data['stock_code'], data['interval'])
                 # Analysis results will be shown in the stored data section
