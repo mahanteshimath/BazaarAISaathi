@@ -265,6 +265,12 @@ if st.button("Fetch Historical Data"):
             'X-SessionToken': session_token
         }
 
+        # Validate the interval parameter
+        valid_intervals = ["minute", "5minute", "30minute", "day"]
+        if interval not in valid_intervals:
+            st.error(f"Invalid interval: {interval}. Please select one of {valid_intervals}.")
+            st.stop()
+
         # Fetch historical data
         response = requests.request("GET", url, headers=headers, data=payload)
         historical_data = json.loads(response.text)
