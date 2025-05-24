@@ -112,50 +112,41 @@ def display_customer_details():
             currency=customer_details['Success']['segments_allowed']['Currency']
         ))
 
-# Ensure all parameters are strings before making the API call
-def fetch_and_display_historical_data(interval, from_date, to_date, stock_code):
+# Ensure variables are explicitly defined before using them
+# Retrieve user inputs for interval, from_date, to_date, and stock_code
+interval = st.selectbox("Select Interval:", ["1minute", "5minute", "30minute", "1day"], key="interval")
+from_date_date = st.date_input("From Date:", key="from_date_date")
+from_date_time = st.time_input("From Time:", key="from_date_time")
+to_date_date = st.date_input("To Date:", key="to_date_date")
+to_date_time = st.time_input("To Time:", key="to_date_time")
+stock_code = st.text_input("Stock Code:", "RELIND", key="stock_code")
+
+# Convert selected date and time to ISO 8601 format
+from_date = f"{from_date_date}T{from_date_time}:00.000Z"
+to_date = f"{to_date_date}T{to_date_time}:00.000Z"
+
+if st.button("Fetch Historical Data"):
     try:
-        # Validate mandatory parameters
-        if not from_date or not to_date or not stock_code:
-            st.error("Please provide valid 'from_date', 'to_date', and 'stock_code' parameters.")
-            return
+        # Initialize SDK
+        api = BreezeConnect(api_key=api_key)
 
-        # Convert parameters to strings
-        interval = str(interval)
-        from_date = str(from_date)
-        to_date = str(to_date)
-        stock_code = str(stock_code)
+        # Generate Session
+        api.generate_session(api_secret=api_secret, session_token=session_token)
 
-        # # Fetch historical data
-        # st.session_state["historical_data"] = breeze.get_historical_data(
-        #     interval=interval,
-        #     from_date=from_date,
-        #     to_date=to_date,
-        #     stock_code=stock_code,
-        #     exchange_code="NSE",
-        #     product_type="cash"
-        # )
-
-        
-        # Fetch historical data
-        st.session_state["historical_data"] = breeze.get_historical_data(
-            interval="1minute",
-            from_date="2025-02-03T09:20:00.000Z",
-            to_date="2025-02-03T09:22:00.000Z",
-            stock_code="RELIND",
+        # Fetch Data using historical data API v2
+        data = api.get_historical_data_v2(
+            interval=interval,
+            from_date=from_date,
+            to_date=to_date,
+            stock_code=stock_code,
             exchange_code="NSE",
             product_type="cash"
         )
 
-
-        # Check if historical data is None
-        if not st.session_state["historical_data"] or "Success" not in st.session_state["historical_data"]:
-            st.error("No historical data found for the given parameters.")
-            return
+        # Convert data (API JSON response) into a table / dataframe using pandas library
+        df = pd.DataFrame(data['Success'])
 
         # Display historical data in a dataframe
-        historical_data = st.session_state["historical_data"]['Success']
-        df = pd.DataFrame(historical_data)
         st.markdown("### Historical Data")
         st.dataframe(df)
 
@@ -222,7 +213,37 @@ breeze.get_historical_data(
 
 """)
 if st.button("Fetch Historical Data"):
-    fetch_and_display_historical_data(interval, from_date, to_date, stock_code)
+    try:
+        # Initialize SDK
+        api = BreezeConnect(api_key=api_key)
+
+        # Generate Session
+        api.generate_session(api_secret=api_secret, session_token=session_token)
+
+        # Fetch Data using historical data API v2
+        data = api.get_historical_data_v2(
+            interval=interval,
+            from_date=from_date,
+            to_date=to_date,
+            stock_code=stock_code,
+            exchange_code="NSE",
+            product_type="cash"
+        )
+
+        # Convert data (API JSON response) into a table / dataframe using pandas library
+        df = pd.DataFrame(data['Success'])
+
+        # Display historical data in a dataframe
+        st.markdown("### Historical Data")
+        st.dataframe(df)
+
+        # Display historical data in a chart
+        st.markdown("### Historical Data Chart")
+        df['datetime'] = pd.to_datetime(df['datetime'])
+        df.set_index('datetime', inplace=True)
+        st.line_chart(df[['open', 'high', 'low', 'close']])
+    except Exception as e:
+        st.error(f"Error fetching historical data: {e}")
 
 # Footer
 footer = """<style>
