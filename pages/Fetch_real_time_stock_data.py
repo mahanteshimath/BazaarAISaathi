@@ -264,6 +264,9 @@ if st.button("Fetch Historical Data"):
         response = requests.request("GET", url, headers=headers, data=payload)
         historical_data = json.loads(response.text)
 
+        # Log the raw API response for debugging
+        st.write("Raw API Response:", json.dumps(historical_data, indent=4))
+
         # Validate and process historical data
         if 'Success' in historical_data and isinstance(historical_data['Success'], list):
             df = pd.DataFrame(historical_data['Success'])
@@ -287,7 +290,8 @@ if st.button("Fetch Historical Data"):
             else:
                 st.error("Error: 'datetime' field is missing in the API response.")
         else:
-            st.error("Error: Invalid API response structure.")
+            error_message = historical_data.get("Error", "Unknown error") if isinstance(historical_data, dict) else "Invalid response format"
+            st.error(f"Error: Invalid API response structure. Details: {error_message}")
 
     except Exception as e:
         st.error(f"Error fetching historical data: {e}")
