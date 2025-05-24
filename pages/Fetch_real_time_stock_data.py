@@ -227,7 +227,7 @@ if st.button("Fetch Historical Data"):
         data = json.loads(customerDetail_response.text)
 
         # Log the raw API response for debugging
-        st.write("Raw API Response:", json.dumps(data, indent=4))
+        st.json(data)  # Changed to st.json for better JSON display
 
         # Validate API response before accessing nested fields
         if data and "Success" in data and data["Success"]:
@@ -243,7 +243,6 @@ if st.button("Fetch Historical Data"):
         # Define historical data API details
         url = "https://api.icicidirect.com/breezeapi/api/v1/historicalcharts"
         
-        # Ensure proper formatting of payload and timestamp for checksum generation
         payload = json.dumps({
             "interval": interval,
             "from_date": from_date,
@@ -251,9 +250,8 @@ if st.button("Fetch Historical Data"):
             "stock_code": stock_code,
             "exchange_code": "NSE",
             "product_type": "Cash"
-        }, separators=(',', ':'))  # Compact JSON format
+        }, separators=(',', ':'))
 
-        # Generate checksum with correct concatenation order
         checksum_string = time_stamp + payload + secret_key
         checksum = hashlib.sha256(checksum_string.encode("utf-8")).hexdigest()
 
@@ -275,34 +273,17 @@ if st.button("Fetch Historical Data"):
         response = requests.request("GET", url, headers=headers, data=payload)
         historical_data = json.loads(response.text)
 
-        # Log the raw API response for debugging
-        st.write("Raw API Response:", json.dumps(historical_data, indent=4))
+        # Display raw JSON response
+        st.markdown("### Raw Historical Data")
+        st.json(historical_data)  # Changed to st.json for better JSON display
 
-        # Validate and process historical data
-        if 'Success' in historical_data and isinstance(historical_data['Success'], list):
-            df = pd.DataFrame(historical_data['Success'])
-
-            # Check if 'datetime' field exists and is valid
-            if 'datetime' in df.columns:
-                try:
-                    df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
-                    df = df.dropna(subset=['datetime'])  # Drop rows with invalid datetime
-                    df.set_index('datetime', inplace=True)
-
-                    # Display historical data in a dataframe
-                    st.markdown("### Historical Data")
-                    st.dataframe(df)
-
-                    # Display historical data in a chart
-                    st.markdown("### Historical Data Chart")
-                    st.line_chart(df[['open', 'high', 'low', 'close']])
-                except Exception as e:
-                    st.error(f"Error processing 'datetime' field: {e}")
-            else:
-                st.error("Error: 'datetime' field is missing in the API response.")
-        else:
-            error_message = historical_data.get("Error", "Unknown error") if isinstance(historical_data, dict) else "Invalid response format"
-            st.error(f"Error: Invalid API response structure. Details: {error_message}")
+        # Show request details for debugging
+        st.markdown("### Request Details")
+        st.json({
+            "URL": url,
+            "Headers": headers,
+            "Payload": json.loads(payload)
+        })
 
     except Exception as e:
         st.error(f"Error fetching historical data: {e}")
