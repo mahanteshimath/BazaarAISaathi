@@ -8,6 +8,7 @@ import json
 import hashlib
 from datetime import datetime, timezone
 from utils.RealTime_stock_price_analysis import analyze_real_time_stock_data
+import plotly.graph_objects as go
 
 # Title and description
 st.title("Fetch Real-Time Stock Data")
@@ -264,8 +265,33 @@ if st.button("Fetch Historical Data"):
                     'to_date': to_date
                 }
 
+                # Create candlestick chart using plotly
                 st.markdown("### Historical Data Chart")
-                st.line_chart(df[['open', 'high', 'low', 'close']])
+                fig = go.Figure(data=[go.Candlestick(x=df.index,
+                                                    open=df['open'],
+                                                    high=df['high'],
+                                                    low=df['low'],
+                                                    close=df['close'],
+                                                    name='OHLC')])
+                
+                # Add volume bars
+                fig.add_trace(go.Bar(x=df.index, y=df['volume'], name='Volume',
+                                   yaxis='y2'))  # Add volume on secondary y-axis
+
+                # Update layout for better visualization
+                fig.update_layout(
+                    title=f'{stock_code} Stock Price',
+                    yaxis_title='Price',
+                    yaxis2=dict(
+                        title='Volume',
+                        overlaying='y',
+                        side='right'
+                    ),
+                    xaxis_rangeslider_visible=False,  # Disable rangeslider for cleaner look
+                    height=600  # Increase height for better visibility
+                )
+
+                st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning("No data available for the selected date range.")
         else:
