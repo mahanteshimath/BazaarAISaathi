@@ -126,15 +126,27 @@ def fetch_and_display_historical_data(interval, from_date, to_date, stock_code):
         to_date = str(to_date)
         stock_code = str(stock_code)
 
+        # # Fetch historical data
+        # st.session_state["historical_data"] = breeze.get_historical_data(
+        #     interval=interval,
+        #     from_date=from_date,
+        #     to_date=to_date,
+        #     stock_code=stock_code,
+        #     exchange_code="NSE",
+        #     product_type="cash"
+        # )
+
+        
         # Fetch historical data
         st.session_state["historical_data"] = breeze.get_historical_data(
-            interval=interval,
-            from_date=from_date,
-            to_date=to_date,
-            stock_code=stock_code,
+            interval="1minute",
+            from_date="2025-02-03T09:20:00.000Z",
+            to_date="2025-02-03T09:22:00.000Z",
+            stock_code="RELIND",
             exchange_code="NSE",
             product_type="cash"
         )
+
 
         # Check if historical data is None
         if not st.session_state["historical_data"] or "Success" not in st.session_state["historical_data"]:
