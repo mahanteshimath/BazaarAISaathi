@@ -15,11 +15,13 @@ def analyze_real_time_stock_data(stock_data, api_key):
     api_endpoint = "https://api.perplexity.ai/chat/completions"
 
     payload = {
-        "model": "sonar",
+        "model": "sonar-reasoning-pro",
+        "temperature": 0.5,
         "messages": [
             {
                 "role": "system",
                 "content": "You are 50+ years experienced financial analyst. Analyse give historical stock price data and provide insights on the investment tip or advice provided by the user. Provide a detailed analysis including potential risks, market conditions, and any relevant historical data that supports your analysis. Recommendation based on the analysis Conclude with BUY HOLD SELL at current price and target price with with approximate timeline."
+                            "Predict stock price for next 10 days based on the historical data provided."
             },
             {
                 "role": "user",
