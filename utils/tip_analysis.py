@@ -19,7 +19,7 @@ def analyze_tip_or_advice(tip_text, api_key):
         "messages": [
             {
                 "role": "system",
-                "content": "Analyze the following investment tip or advice. Provide a detailed analysis including potential risks, opportunities, and overall feasibility."
+                "content": "Act as an investment analyst. Analyze the following investment tip or advice. Provide a detailed analysis including potential risks, opportunities, and overall feasibility."
             },
             {
                 "role": "user",

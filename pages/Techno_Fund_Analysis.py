@@ -10,7 +10,7 @@ try:
     nse_data = pd.read_csv(file_path)
     company_names = nse_data["NAME OF COMPANY"].tolist()
 
-    st.title("Fundamental Analysis")
+    st.title("Techno Fundamental Analysis")
     st.write("### Select a Company")
 
     selected_company = st.selectbox("Choose a company for analysis:", company_names)
