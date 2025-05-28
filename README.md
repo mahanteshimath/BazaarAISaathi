@@ -15,6 +15,9 @@ BazaarAISaathi is an AI-powered platform designed to empower investors with acti
 - 📉 **Deep Market Insights:** Stay updated with real-time indicators such as top gainers/losers, macroeconomic trends, and critical market data.
 - ⏱️ **Real-Time Stock Data:** Fetch and analyze live stock prices and trends for informed decision-making.
 - 🧪 **Hypothesis Testing:** Test investment hypotheses using historical and real-time data.
+- 💭 **Ask Finance Questions:** Get expert answers to any finance-related queries using advanced AI technology.
+- 📚 **Investment Books Summary:** Access concise summaries of top 50 investment books for quick learning and reference.
+
 
 ## 🛠️ Technologies Used
 - **Streamlit:** Interactive web app framework.
