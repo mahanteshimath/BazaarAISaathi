@@ -1,14 +1,11 @@
 import streamlit as st
 
-
-
+# Add a logo and navigation link
 st.logo(
     image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg",
     link="https://www.linkedin.com/in/mahantesh-hiremath/",
     icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
 )
-
-
 
 def add_custom_css():
     st.markdown("""
@@ -28,8 +25,7 @@ def add_custom_css():
         """, unsafe_allow_html=True)
 
 add_custom_css()
-st.markdown('<div class="flashing-title">❄️BAAZAR-AI-SAATHI❄️</div>', unsafe_allow_html=True)
-
+st.markdown('<div class="flashing-title">❄️ BAAZAR-AI-SAATHI ❄️</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2, gap="small")
 with col1:
@@ -39,58 +35,67 @@ with col2:
     st.title("Hypothesis", anchor=False)
     st.write(
         """
-        The goal is to help retail investors safeguard their hard-earned money by leveraging advanced AI-driven insights, 
-        data-driven strategies, and comprehensive financial tools.
+        BazaarAISaathi is built on the hypothesis that retail investors can dramatically improve their financial outcomes by leveraging AI-powered tools for:
+        - Deep market analysis
+        - Data-driven decision making
+        - Personalized portfolio management
+        
+        Our mission is to democratize access to advanced financial intelligence, making the Indian stock market more transparent, accessible, and profitable for everyone.
         """
     )
-    st.subheader("Indian Stock Market")
+    st.subheader("🔎 Indian Stock Market Insights")
     st.write(
         """
-        - Analyze market indicators to understand trends and patterns.
-        - Explore the impact of macroeconomic factors on stock performance.
-        - Provide actionable insights to minimize risks and maximize returns.
+        - Analyze real-time and historical market indicators to uncover actionable trends.
+        - Assess the impact of macroeconomic and sectoral factors on stock performance.
+        - Deliver timely insights to help investors minimize risks and seize opportunities.
         """
     )
-    st.subheader("Stock Analysis")
+    st.subheader("📈 Stock & Strategy Analysis")
     st.write(
         """
-        - Perform fundamental and technical analysis to identify potential investment opportunities.
-        - Test the effectiveness of stock tips and strategies to avoid speculative losses.
-        - Deliver AI-powered recommendations for informed decision-making.
+        - Perform both fundamental and technical analysis using AI and data science.
+        - Test and validate investment tips, strategies, and market hypotheses.
+        - Provide unbiased, AI-powered recommendations to support informed decisions.
         """
     )
-    st.subheader("Portfolio")
+    st.subheader("💼 Portfolio Optimization")
     st.write(
         """
-        - Optimize portfolio allocation to maximize returns and minimize risks.
-        - Analyze portfolio performance over time to ensure alignment with financial goals.
-        - Provide stock-wise recommendations to improve portfolio health.
+        - Optimize asset allocation for maximum returns and risk management.
+        - Continuously monitor and analyze portfolio performance against financial goals.
+        - Generate stock-wise and holistic recommendations to enhance portfolio health.
         """
     )
-st.markdown("""---------------------------------""")
-st.write("\n")
+    st.subheader("🧠 Why AI for Investing?")
+    st.write(
+        """
+        - AI can process vast amounts of financial data, news, and sentiment in real time.
+        - It helps identify patterns and opportunities that are invisible to the human eye.
+        - Personalized insights empower retail investors to compete with institutional players.
+        """
+    )
 
-st.write("\n")
-
+st.markdown("""---""")
 
 st.markdown(
     '''
     <style>
     .streamlit-expanderHeader {
-        background-color: blue;
-        color: white; # Adjust this for expander header color
+        background-color: #2C1E5B;
+        color: white;
     }
     .streamlit-expanderContent {
-        background-color: blue;
-        color: white; # Expander content color
+        background-color: #2C1E5B;
+        color: white;
     }
     </style>
     ''',
     unsafe_allow_html=True
 )
 
-footer="""<style>
-
+footer = """
+<style>
 .footer {
 position: fixed;
 left: 0;
@@ -105,4 +110,4 @@ text-align: center;
 <p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
 </div>
 """
-st.markdown(footer,unsafe_allow_html=True)
+st.markdown(footer, unsafe_allow_html=True)
