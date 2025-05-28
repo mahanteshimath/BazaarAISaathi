@@ -3,6 +3,16 @@ Your AI Friend in the Stock Market 🤖📈
 
 ![App Architecture](src/App_Architecture.jpg)
 
+
+## Flow daigram
+
+```mermaid
+   graph TD;
+         A-->B;
+         A-->C;
+         B-->D;
+         C-->D;
+```
 ## Overview
 BazaarAISaathi is an AI-powered platform designed to empower investors with actionable insights into the Indian stock market. Leveraging advanced natural language processing, real-time data analytics, and expert-driven financial modeling, the app delivers personalized investment strategies, market sentiment analysis, and portfolio optimization recommendations.
 
