@@ -7,11 +7,138 @@ Your AI Friend in the Stock Market 🤖📈
 ## Flow daigram
 
 ```mermaid
-   graph TD;
-         A-->B;
-         A-->C;
-         B-->D;
-         C-->D;
+flowchart TD
+    %% User Interface Layer
+    subgraph "User Interface Layer"
+        direction TB
+        Home["Home.py"]:::ui
+        Architecture["Architecture.py"]:::ui
+        DeepResearch["Deep_Research.py"]:::ui
+        RealTimeData["Fetch_real_time_stock_data.py"]:::ui
+        AIResearch["Finance_with_Perplexity.py"]:::ui
+        FinancialIndependence["Financial_Independence.py"]:::ui
+        Hypothesis["Hypothesis.py"]:::ui
+        MarketIndicators["Market_Indicators.py"]:::ui
+        PortfolioAnalysisPage["Portfolio_Analysis.py"]:::ui
+        StocksList["Stocks_List.py"]:::ui
+        TechnoFund["Techno_Fund_Analysis.py"]:::ui
+        TipTester["Tip_Tester.py"]:::ui
+    end
+
+    %% Business Logic Layer
+    subgraph "Business Logic Layer"
+        direction TB
+        RTStock["RealTime_stock_price_analysis.py"]:::logic
+        DeepResearchLogic["deep_research.py"]:::logic
+        MarketInsights["get_market_insights.py"]:::logic
+        FinanceUtils["finance_utils.py"]:::logic
+        PortfolioLogic["portfolio_analysis.py"]:::logic
+        FIREPlanner["fire_planner.py"]:::logic
+        TipAnalysis["tip_analysis.py"]:::logic
+    end
+
+    %% Data Layer
+    subgraph "Data Layer"
+        direction TB
+        BSE["BSE_Equity.csv"]:::data
+        NSE["NSE_EQUITYS.csv"]:::data
+        Holdings["holdings.csv"]:::data
+        Books["Top50Books.csv"]:::data
+        ArchAsset["Architecture_app.txt"]:::data
+    end
+
+    %% External Services
+    subgraph "External Services"
+        direction TB
+        StockAPI["Stock Price API"]:::external
+        PerplexityAI["Perplexity AI / LangChain"]:::external
+        EasyOCR["EasyOCR / DocParser"]:::external
+        StreamlitSecrets["Streamlit Secrets"]:::external
+    end
+
+    %% Flows: UI to Logic
+    Home -->|navigates to| Architecture
+    Home -->|navigates to| DeepResearch
+    Home -->|navigates to| RealTimeData
+    Home -->|navigates to| AIResearch
+    Home -->|navigates to| FinancialIndependence
+    Home -->|navigates to| Hypothesis
+    Home -->|navigates to| MarketIndicators
+    Home -->|navigates to| PortfolioAnalysisPage
+    Home -->|navigates to| StocksList
+    Home -->|navigates to| TechnoFund
+    Home -->|navigates to| TipTester
+
+    RealTimeData -->|calls| RTStock
+    DeepResearch -->|calls| DeepResearchLogic
+    AIResearch -->|calls| MarketInsights
+    PortfolioAnalysisPage -->|calls| PortfolioLogic
+    FinancialIndependence -->|calls| FIREPlanner
+    Hypothesis -->|calls| FinanceUtils
+    MarketIndicators -->|calls| FinanceUtils
+    StocksList -->|calls| FinanceUtils
+    TechnoFund -->|calls| FinanceUtils
+    TipTester -->|calls| TipAnalysis
+
+    %% Logic to Data/External
+    RTStock -->|fetches JSON| StockAPI
+    RTStock -->|processes data| FinanceUtils
+
+    DeepResearchLogic -->|scrapes & processes| Books
+    DeepResearchLogic -->|AI call| PerplexityAI
+
+    MarketInsights -->|sends data| PerplexityAI
+
+    FinanceUtils -->|reads CSV| BSE
+    FinanceUtils -->|reads CSV| NSE
+
+    PortfolioLogic -->|reads CSV| Holdings
+    FIREPlanner -->|reads CSV| Holdings
+
+    TipAnalysis -->|OCR image| EasyOCR
+    TipAnalysis -->|AI validation| PerplexityAI
+
+    %% Return flows
+    RTStock -->|DataFrame| RealTimeData
+    DeepResearchLogic -->|text/DataFrame| DeepResearch
+    MarketInsights -->|insights| AIResearch
+    FinanceUtils -->|DataFrame| Hypothesis
+    FinanceUtils -->|DataFrame| MarketIndicators
+    PortfolioLogic -->|analysis| PortfolioAnalysisPage
+    FIREPlanner -->|plan| FinancialIndependence
+    TipAnalysis -->|result| TipTester
+
+    %% Click Events
+    click Home "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/Home.py"
+    click Architecture "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Architecture.py"
+    click DeepResearch "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Deep_Research.py"
+    click RealTimeData "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Fetch_real_time_stock_data.py"
+    click AIResearch "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Finance_with_Perplexity.py"
+    click FinancialIndependence "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Financial_Independence.py"
+    click Hypothesis "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Hypothesis.py"
+    click MarketIndicators "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Market_Indicators.py"
+    click PortfolioAnalysisPage "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Portfolio_Analysis.py"
+    click StocksList "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Stocks_List.py"
+    click TechnoFund "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Techno_Fund_Analysis.py"
+    click TipTester "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/pages/Tip_Tester.py"
+    click RTStock "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/utils/RealTime_stock_price_analysis.py"
+    click DeepResearchLogic "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/utils/deep_research.py"
+    click MarketInsights "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/utils/get_market_insights.py"
+    click FinanceUtils "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/utils/finance_utils.py"
+    click PortfolioLogic "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/utils/portfolio_analysis.py"
+    click FIREPlanner "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/utils/fire_planner.py"
+    click TipAnalysis "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/utils/tip_analysis.py"
+    click BSE "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/src/BSE_Equity.csv"
+    click NSE "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/src/NSE_EQUITYS.csv"
+    click Holdings "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/src/holdings.csv"
+    click Books "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/src/Top50Books.csv"
+    click ArchAsset "https://github.com/mahanteshimath/bazaaraisaathi/blob/main/src/Architecture_app.txt"
+
+    %% Styles
+    classDef ui fill:#cce5ff,stroke:#004085,color:#004085;
+    classDef logic fill:#d4edda,stroke:#155724,color:#155724;
+    classDef data fill:#ffeeba,stroke:#856404,color:#856404;
+    classDef external fill:#d6d8db,stroke:#1b1e21,color:#1b1e21;
 ```
 ## Overview
 BazaarAISaathi is an AI-powered platform designed to empower investors with actionable insights into the Indian stock market. Leveraging advanced natural language processing, real-time data analytics, and expert-driven financial modeling, the app delivers personalized investment strategies, market sentiment analysis, and portfolio optimization recommendations.
