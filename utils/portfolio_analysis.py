@@ -12,11 +12,11 @@ def analyze_portfolio(df, api_key):
     for _, row in df.iterrows():
         stock_info = f"INSTRUMENT: {row['INSTRUMENT']}, QTY: {row['QTY.']}, AVG. COST: {row['AVG. COST']}, LTP: {row['LTP']}, INVESTED: {row['INVESTED']}, CUR. VAL: {row['CUR. VAL']}, P&L: {row['P&L']}"
         prompt = f"""
-        Analyze the following stock from a portfolio and provide a clear recommendation (BUY, SELL, or HOLD).\n
+        You are 50+ years experienced financial analyst. Analyze the following stock from a portfolio and provide a clear recommendation (BUY, SELL, or HOLD).\n
         Stock details: {stock_info}\n
         For BUY: Suggest a price range to accumulate.\n        For SELL: Suggest a target price and reason.\n        For HOLD: Give a reason for holding.\n        Use fundamental and technical reasoning.\n        """
         payload = {
-            "model": "sonar",
+            "model": "sonar-pro-reasoning",
             "messages": [
                 {"role": "system", "content": "You are a stock market analysis expert."},
                 {"role": "user", "content": prompt}
