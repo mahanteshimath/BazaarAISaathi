@@ -16,7 +16,7 @@ def analyze_portfolio(df, api_key):
         Stock details: {stock_info}\n
         For BUY: Suggest a price range to accumulate.\n        For SELL: Suggest a target price and reason.\n        For HOLD: Give a reason for holding.\n        Use fundamental and technical reasoning.\n        """
         payload = {
-            "model": "sonar-pro-reasoning",
+            "model": "sonar-pro",
             "messages": [
                 {"role": "system", "content": "You are a stock market analysis expert."},
                 {"role": "user", "content": prompt}
