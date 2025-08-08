@@ -3,6 +3,9 @@ Your AI Friend in the Stock Market 🤖📈
 
 ![App Architecture](src/App_Architecture.jpg)
 
+# Demo Video
+https://youtu.be/5t2ldWS3SJ8
+
 
 ## Flow daigram
 
