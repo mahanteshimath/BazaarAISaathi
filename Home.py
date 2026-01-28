@@ -79,10 +79,11 @@ Fetch_real_time_stock_data = st.Page(
     title="Fetch Real-time Stock Data",
     icon=":material/api:",
 )
-# Finance_doc_summarize = st.Page(
-#     "pages/Finance_doc_summarize.py",
-#     title="Finance Document Summarizer",
-#     icon=":material/summarize:",
+
+# ipo = st.Page(
+#     "pages/All_About_IPOS.py",
+#     title="All About IPOS",
+#     icon=":material/:",
 # )
 
 pg = st.navigation(
