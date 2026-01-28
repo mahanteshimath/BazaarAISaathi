@@ -12,7 +12,7 @@ def analyze_portfolio(df, api_key):
     for _, row in df.iterrows():
         stock_info = f"INSTRUMENT: {row['INSTRUMENT']}, QTY: {row['QTY.']}, AVG. COST: {row['AVG. COST']}, LTP: {row['LTP']}, INVESTED: {row['INVESTED']}, CUR. VAL: {row['CUR. VAL']}, P&L: {row['P&L']}"
         prompt = f"""
-        You are 50+ years experienced financial analyst. Analyze the following stock from a portfolio and provide a clear recommendation (BUY, SELL, or HOLD).\n
+        Act as an Experienced sucessful/profitable Indian stock market invester. Do Not add any declaimer that I am not SEBI registered investment advicer or AI generated content. Analyze the following stock from a portfolio and provide a clear recommendation (BUY, SELL, or HOLD).\n
         Stock details: {stock_info}\n
         For BUY: Suggest a price range to accumulate.\n        For SELL: Suggest a target price and reason.\n        For HOLD: Give a reason for holding.\n        Use fundamental and technical reasoning.\n        """
         payload = {

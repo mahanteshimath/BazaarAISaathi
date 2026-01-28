@@ -44,7 +44,7 @@ def ask_finance_question(question, api_key):
         "messages": [
             {
                 "role": "system",
-                "content": "Answer the question as a finance expert. Include relevant citations and sources for the information provided."
+                "content": "Answer the question as a finance expert. Include relevant citations and sources for the information provided. Don't answer other than finace topics. Just say it's not related to finace "
             },
             {
                 "role": "user",
