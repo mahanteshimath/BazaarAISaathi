@@ -19,7 +19,7 @@ def analyze_tip_or_advice(tip_text, api_key):
         "messages": [
             {
                 "role": "system",
-                "content": "Act as an Experienced sucessful/profitable Indian stock market invester. Do Not add any declaimer that I am not SEBI registered investment advicer or AI generated content. Analyze the following investment tip or advice. Provide a detailed analysis including potential risks, opportunities, and overall feasibility."
+                "content": "Act as an Experienced sucessful/profitable Indian stock market investor. Do Not add any disclaimer that I am not SEBI registered investment advisor or AI generated content. Analyze the following investment tip or advice. Provide a detailed analysis including potential risks, opportunities, and overall feasibility."
             },
             {
                 "role": "user",

@@ -28,10 +28,10 @@ try:
         prompt=PromptTemplate(
             input_variables=["Listed_Name"],
             template=(
-                "Act as an Experienced sucessful/profitable Indian stock market invester. Provide a comprehensive analysis of the given {Listed_Name}. This should include a thorough evaluation of the company financial health, its competitive position in the industry, and any macroeconomic factors that could impact its performance. The analysis should also include an assessment of the stock's valuation, taking into account its projected earnings growth and other key financial metrics. Based on your analysis, provide a recommendation on whether to buy, hold, or sell the stock. Your analysis should be backed with supporting data and reasoning."
+                "Act as an Experienced sucessful/profitable Indian stock market investor. Provide a comprehensive analysis of the given {Listed_Name}. This should include a thorough evaluation of the company financial health, its competitive position in the industry, and any macroeconomic factors that could impact its performance. The analysis should also include an assessment of the stock's valuation, taking into account its projected earnings growth and other key financial metrics. Based on your analysis, provide a recommendation on whether to buy, hold, or sell the stock. Your analysis should be backed with supporting data and reasoning."
                 "📈 For {Listed_Name}, provide detailed and up-to-date financial data. Include current stock price, "
                 "volume, key financial ratios (e.g., P/E, P/B, dividend yield), recent price trends, and relevant market indicators."
-                "Do Not add any declaimer that I am not SEBI registered investment advicer or AI generated content."
+                "Do not add any disclaimer that I am not a SEBI-registered investment advisor or AI-generated content"
                 "Because explicitly I have informed users."
             
             
@@ -45,10 +45,10 @@ try:
         prompt=PromptTemplate(
             input_variables=["Listed_Name"],
             template=(
-                "Act as an Experienced sucessful/profitable Indian stock market invester. Provide a comprehensive analysis of the given {Listed_Name}. This should include a thorough evaluation of the company financial health, its competitive position in the industry, and any macroeconomic factors that could impact its performance. The analysis should also include an assessment of the stock's valuation, taking into account its projected earnings growth and other key financial metrics. Based on your analysis, provide a recommendation on whether to buy, hold, or sell the stock. Your analysis should be backed with supporting data and reasoning."
+                "Act as an Experienced sucessful/profitable Indian stock market investor.. Provide a comprehensive analysis of the given {Listed_Name}. This should include a thorough evaluation of the company financial health, its competitive position in the industry, and any macroeconomic factors that could impact its performance. The analysis should also include an assessment of the stock's valuation, taking into account its projected earnings growth and other key financial metrics. Based on your analysis, provide a recommendation on whether to buy, hold, or sell the stock. Your analysis should be backed with supporting data and reasoning."
                 "Also For {Listed_Name}, analyze recent news articles, social media posts, and expert commentary. "
                 "Summarize the prevailing sentiment, highlight any key events, and note emerging trends that may impact the stock."
-                "Do Not add any declaimer that I am not SEBI registered investment advicer or AI generated content."
+                "Do not add any disclaimer that I am not a SEBI-registered investment advisor or AI-generated content"
                 "Because explicitly I have informed users."
             )
         ),
@@ -60,10 +60,10 @@ try:
         prompt=PromptTemplate(
             input_variables=["Listed_Name"],
             template=(
-                "Act as an Experienced sucessful/profitable Indian stock market invester. 🌐 For {Listed_Name}, analyze the current macro-economic environment. "
+                "Act as an Experienced sucessful/profitable Indian stock market investor. 🌐 For {Listed_Name}, analyze the current macro-economic environment. "
                 "Include key indicators such as GDP growth, inflation rates, interest rates, unemployment trends, "
                 "and central bank policies. Summarize how these factors could impact the overall market and the asset."
-                "Do Not add any declaimer that I am not SEBI registered investment advicer or AI generated content."
+                "Do not add any disclaimer that I am not a SEBI-registered investment advisor or AI-generated content"
                 "Because explicitly I have informed users."
             )
         ),
@@ -75,12 +75,12 @@ try:
         prompt=PromptTemplate(
             input_variables=["market_data", "sentiment_analysis", "macro_analysis"],
             template=(
-                "Act as an Experienced sucessful/profitable Indian stock market invester. 📊 Using the detailed market data:\n{market_data}\n"
+                "Act as an Experienced sucessful/profitable Indian stock market investor.📊 Using the detailed market data:\n{market_data}\n"
                 "the sentiment analysis:\n{sentiment_analysis}\n"
                 "and the macro-economic analysis:\n{macro_analysis}\n"
                 "develop a sophisticated trading strategy. Outline a clear asset allocation, specify entry and exit points, "
                 "detail risk management measures, and provide estimated expected returns. If applicable, incorporate algorithmic signals."
-                "Do Not add any declaimer that I am not SEBI registered investment advicer or AI generated content."
+                "Do not add any disclaimer that I am not a SEBI-registered investment advisor or AI-generated content"
                 "Because explicitly I have informed users."
             )
         ),
@@ -92,10 +92,10 @@ try:
         prompt=PromptTemplate(
             input_variables=["strategy"],
             template=(
-                "Act as an Experienced sucessful/profitable Indian stock market invester. ⚠️ Evaluate the following trading strategy:\n{strategy}\n"
+                "Act as an Experienced sucessful/profitable Indian stock market investor. ⚠️ Evaluate the following trading strategy:\n{strategy}\n"
                 "Identify potential risks such as market volatility, liquidity issues, or unexpected market events. "
                 "Summarize your risk assessment in 4 concise bullet points, and state in the final bullet point whether the strategy meets an acceptable risk tolerance.  At the end of analysis recommend with BUY at PRICE , SELL At Pirce or HOLD. "
-                "Do Not add any declaimer that I am not SEBI registered investment advicer or AI generated content."
+                "Do not add any disclaimer that I am not a SEBI-registered investment advisor or AI-generated content"
                 "Because explicitly I have informed users."
             )
         ),
