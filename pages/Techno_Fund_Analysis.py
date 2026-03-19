@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-from langchain import PromptTemplate, LLMChain
+from langchain_core.prompts import PromptTemplate
 from langchain_community.chat_models.perplexity import ChatPerplexity
-from langchain.chains import SequentialChain
+from langchain.chains import LLMChain, SequentialChain
 
 # Load NSE_EQUITYS.csv file
 file_path = "./src/NSE_EQUITYS.csv"
