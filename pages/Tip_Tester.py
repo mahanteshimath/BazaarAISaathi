@@ -20,7 +20,7 @@ uploaded_file = st.file_uploader("Upload a screenshot of your investment advice 
 
 extracted_text = None
 if uploaded_file:
-    st.image(uploaded_file, caption="Uploaded Screenshot", use_container_width=True)
+    st.image(uploaded_file, caption="Uploaded Screenshot", width="stretch")
     try:
         # Open the uploaded file using Pillow
         image = Image.open(uploaded_file)

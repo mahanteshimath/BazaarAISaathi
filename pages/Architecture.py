@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 st.title("🗺️ Application Architecture")
 
 # Use the correct relative path for Streamlit static file serving
-st.image("src/App_Architecture.jpg", caption="BazaarAISaathi - High Level Architecture", use_container_width=True)
+st.image("src/App_Architecture.jpg", caption="BazaarAISaathi - High Level Architecture", width="stretch")
 
 st.markdown(
     """
