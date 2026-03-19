@@ -359,7 +359,7 @@ if st.button("Fetch Historical Data"):
                     update_session_with_historical_data(df, stock_code, interval, from_date, to_date)
                     
                     # Display the chart
-                    st.plotly_chart(fig, use_container_width=True, key="main_chart")
+                    st.plotly_chart(fig, width="stretch", key="main_chart")
                     
                 except Exception as e:
                     st.error(f"Error creating chart: {str(e)}")
@@ -505,7 +505,7 @@ def display_stored_session_data():
             st.markdown("### Historical Data Chart")
             chart_data = st.session_state["chart_data"]
             fig = display_chart(chart_data["df"], chart_data["stock_code"])
-            st.plotly_chart(fig, use_container_width=True, key="persistent_chart")
+            st.plotly_chart(fig, width="stretch", key="persistent_chart")
 
         # Display analysis results if available
         if st.session_state["analysis_results"] is not None:
