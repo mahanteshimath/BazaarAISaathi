@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.finance_utils import get_top_10_learnings, ask_finance_question, load_books
+from utils.perplexity_key import get_perplexity_api_key
 import pandas as pd
 
 if "learnings" not in st.session_state:
@@ -23,7 +24,9 @@ else:
 
     if st.button("Summarize Top 10 Learnings"):
         with st.spinner("Fetching top 10 learnings..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             learnings = get_top_10_learnings(selected_book, api_key)
 
             if isinstance(learnings, dict) and "error" in learnings:
@@ -41,7 +44,9 @@ question = st.text_area("Enter your finance-related question i.e What is the cur
 
 if st.button("Get Answer"):
     with st.spinner("Fetching answer..."):
-        api_key = st.secrets["PERPLEXITY_API_KEY"]
+        api_key = get_perplexity_api_key(show_warning=True)
+        if not api_key:
+            st.stop()
         answer = ask_finance_question(question, api_key)
 
         if "error" in answer:

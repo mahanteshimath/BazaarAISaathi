@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.fire_planner import generate_fire_plan
+from utils.perplexity_key import get_perplexity_api_key
 
 st.title("Financial Independence")
 
@@ -24,7 +25,9 @@ with st.form("fire_form"):
 
 if submitted:
     with st.spinner("Generating your FIRE plan..."):
-        api_key = st.secrets["PERPLEXITY_API_KEY"]
+        api_key = get_perplexity_api_key(show_warning=True)
+        if not api_key:
+            st.stop()
         fire_result = generate_fire_plan(
             age, salary, years, essentials, non_essentials, savings_pct, investment_types, side_income, skills, api_key,
             marital_status=marital_status, kids=kids

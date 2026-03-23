@@ -8,6 +8,7 @@ import json
 import hashlib
 from datetime import datetime, timezone
 from utils.RealTime_stock_price_analysis import analyze_real_time_stock_data
+from utils.perplexity_key import get_perplexity_api_key
 import plotly.graph_objects as go
 
 # Title and description
@@ -420,7 +421,9 @@ if st.button("Run RealTime stock price analysis"):
             f"Volatility (Std Dev of Returns): {(df['close'].pct_change().std() * 100):.2f}%"        )
         
         # Get API key from secrets
-        api_key = st.secrets["PERPLEXITY_API_KEY"]
+        api_key = get_perplexity_api_key(show_warning=True)
+        if not api_key:
+            st.stop()
         
         with st.spinner('Analyzing historical data...'):
             analysis_result = analyze_real_time_stock_data(data_text, api_key)

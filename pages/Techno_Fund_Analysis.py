@@ -3,6 +3,7 @@ import pandas as pd
 from langchain_core.prompts import PromptTemplate
 from langchain_community.chat_models.perplexity import ChatPerplexity
 from langchain.chains import LLMChain, SequentialChain
+from utils.perplexity_key import get_perplexity_api_key
 
 # Load NSE_EQUITYS.csv file
 file_path = "./src/NSE_EQUITYS.csv"
@@ -15,11 +16,15 @@ try:
 
     selected_company = st.selectbox("Choose a company for analysis:", company_names)
 
+    api_key = get_perplexity_api_key(show_warning=True)
+    if not api_key:
+        st.stop()
+
     # -------------------- Initialization --------------------
     # API key and model initialization
     llm = ChatPerplexity(model="sonar-reasoning-pro", 
                         #  temperature=0.5, 
-                         pplx_api_key=st.secrets["PERPLEXITY_API_KEY"])
+                         pplx_api_key=api_key)
 
     # -------------------- Chain Definitions --------------------
     # Define all chains globally

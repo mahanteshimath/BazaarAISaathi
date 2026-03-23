@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.tip_analysis import analyze_tip_or_advice
+from utils.perplexity_key import get_perplexity_api_key
 from PIL import Image
 import easyocr
 import numpy as np
@@ -43,7 +44,9 @@ if tip_text or uploaded_file:
 if st.button("Run Deep Analysis for Tip or Advice"):
     if tip_text:
         with st.spinner("Analyzing your tip or advice..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             analysis_result = analyze_tip_or_advice(tip_text, api_key)
 
             if isinstance(analysis_result, dict) and "error" in analysis_result:

@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import json
 from utils.get_market_insights import get_market_insights, get_top_gainers_and_losers
+from utils.perplexity_key import get_perplexity_api_key
 
 st.title("Today's Market Indicators")
 st.write(
@@ -12,7 +13,9 @@ st.write(
 )
 
 def fetch_market_insights():
-    api_key = st.secrets["PERPLEXITY_API_KEY"]
+    api_key = get_perplexity_api_key(show_warning=True)
+    if not api_key:
+        return {"error": "Missing Perplexity API key."}
     return get_market_insights(api_key)
 
 if st.button("Get Latest Market Insights"):
@@ -38,7 +41,9 @@ if st.button("Get Latest Market Insights"):
             st.json(insights)
 
         def fetch_top_gainers_and_losers():
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                return {"error": "Missing Perplexity API key."}
             return get_top_gainers_and_losers(api_key)
 
         st.write("-----")

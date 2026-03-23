@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.perplexity_key import render_perplexity_api_key_input
 
 
 st.logo(
@@ -13,6 +14,8 @@ st.set_page_config(
   layout="wide",
   initial_sidebar_state="expanded",
 ) 
+
+render_perplexity_api_key_input()
 
 # --- Info ---
 Hypothesis_page = st.Page(

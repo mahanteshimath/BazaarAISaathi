@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.portfolio_analysis import analyze_portfolio, parse_portfolio_file, parse_portfolio_text
+from utils.perplexity_key import get_perplexity_api_key
 import pandas as pd
 
 st.title("Portfolio Analysis")
@@ -60,7 +61,9 @@ if portfolio_df is not None:
     st.dataframe(portfolio_df)
     if st.button("Run Portfolio Analysis", key="run_portfolio_analysis"):
         with st.spinner("Analyzing your portfolio..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             results = analyze_portfolio(portfolio_df, api_key)
             st.subheader("Stock-wise Recommendations")
             for res in results:

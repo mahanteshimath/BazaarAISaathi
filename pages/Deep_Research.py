@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.deep_research import perform_market_analysis
+from utils.perplexity_key import get_perplexity_api_key
 
 st.title("Deep Researches on Indian Stocks, Sectors and different perspectives")
 st.write(
@@ -82,7 +83,9 @@ if st.button("Run Market Analysis", key="run_market_analysis"):
     user_prompt = st.session_state.get("user_prompt", "")
     if user_prompt:
         with st.spinner("Performing market analysis..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             analysis_result = perform_market_analysis(user_prompt, api_key)
 
             if isinstance(analysis_result, dict) and "error" in analysis_result:
@@ -124,7 +127,9 @@ if st.button("Run Competitor Benchmarking", key="run_competitor_benchmarking"):
     competitor_prompt = st.session_state.get("competitor_prompt", "")
     if competitor_prompt:
         with st.spinner("Performing competitor benchmarking..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             benchmarking_result = perform_market_analysis(competitor_prompt, api_key)
 
             if isinstance(benchmarking_result, dict) and "error" in benchmarking_result:
@@ -164,7 +169,9 @@ if st.button("Run Investment Opportunity Evaluation", key="run_investment_evalua
     investment_prompt = st.session_state.get("investment_prompt", "")
     if investment_prompt:
         with st.spinner("Evaluating investment opportunity..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             investment_result = perform_market_analysis(investment_prompt, api_key)
 
             if isinstance(investment_result, dict) and "error" in investment_result:
@@ -205,7 +212,9 @@ if st.button("Run Technology Trends Report", key="run_technology_trends"):
     tech_trends_prompt = st.session_state.get("tech_trends_prompt", "")
     if tech_trends_prompt:
         with st.spinner("Generating technology trends report..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             tech_trends_result = perform_market_analysis(tech_trends_prompt, api_key)
 
             if isinstance(tech_trends_result, dict) and "error" in tech_trends_result:
@@ -246,7 +255,9 @@ if st.button("Run Marketing Strategy Development", key="run_marketing_strategy")
     marketing_strategy_prompt = st.session_state.get("marketing_strategy_prompt", "")
     if marketing_strategy_prompt:
         with st.spinner("Developing marketing strategy..."):
-            api_key = st.secrets["PERPLEXITY_API_KEY"]
+            api_key = get_perplexity_api_key(show_warning=True)
+            if not api_key:
+                st.stop()
             marketing_strategy_result = perform_market_analysis(marketing_strategy_prompt, api_key)
 
             if isinstance(marketing_strategy_result, dict) and "error" in marketing_strategy_result:
